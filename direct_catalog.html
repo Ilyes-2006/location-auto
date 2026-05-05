@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Auto-Loc - Car Catalog</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline": "#909097",
+                        "surface-container-highest": "#273647",
+                        "background": "#051424",
+                        "primary": "#bec6e0",
+                        "on-primary": "#283044",
+                        "on-background": "#d4e4fa",
+                        "tertiary-fixed": "#fcdeb5",
+                        "tertiary-fixed-dim": "#dec29a",
+                        "primary-container": "#0f172a",
+                        "inverse-on-surface": "#233143",
+                        "inverse-surface": "#d4e4fa",
+                        "primary-fixed-dim": "#bec6e0",
+                        "on-primary-fixed-variant": "#3f465c",
+                        "on-secondary-fixed": "#00201d",
+                        "secondary-container": "#29a195",
+                        "surface-container-high": "#1c2b3c",
+                        "surface-dim": "#051424",
+                        "surface-variant": "#273647",
+                        "surface-container-low": "#0d1c2d",
+                        "secondary": "#6bd8cb",
+                        "tertiary-container": "#231500",
+                        "on-tertiary-fixed": "#271901",
+                        "surface-tint": "#bec6e0",
+                        "surface-container-lowest": "#010f1f",
+                        "on-tertiary-fixed-variant": "#574425",
+                        "on-error": "#690005",
+                        "on-tertiary-container": "#957d5a",
+                        "primary-fixed": "#dae2fd",
+                        "surface": "#051424",
+                        "secondary-fixed-dim": "#6bd8cb",
+                        "surface-container": "#122131",
+                        "on-tertiary": "#3e2d11",
+                        "outline-variant": "#45464d",
+                        "on-surface-variant": "#c6c6cd",
+                        "secondary-fixed": "#89f5e7",
+                        "error-container": "#93000a",
+                        "error": "#ffb4ab",
+                        "inverse-primary": "#565e74",
+                        "on-secondary": "#003732",
+                        "on-primary-container": "#798098",
+                        "surface-bright": "#2c3a4c",
+                        "on-secondary-fixed-variant": "#005049",
+                        "on-error-container": "#ffdad6",
+                        "on-secondary-container": "#00302b",
+                        "on-primary-fixed": "#131b2e",
+                        "on-surface": "#d4e4fa",
+                        "tertiary": "#dec29a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "sm": "8px",
+                        "margin": "32px",
+                        "xl": "40px",
+                        "md": "16px",
+                        "unit": "4px",
+                        "xs": "4px",
+                        "lg": "24px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "h1": ["Inter"],
+                        "h2": ["Inter"],
+                        "body-md": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "display": ["Inter"],
+                        "label-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "h1": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "h2": ["24px", { "lineHeight": "1.3", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "body-sm": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "1", "fontWeight": "600" }],
+                        "display": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-md": ["14px", { "lineHeight": "1", "letterSpacing": "0.01em", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #051424; color: #d4e4fa; }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<nav class="bg-slate-900/80 dark:bg-slate-950/80 backdrop-blur-xl docked full-width top-0 z-50 shadow-sm flex justify-between items-center w-full px-6 h-16 sticky">
+<div class="flex items-center gap-8">
+<div class="text-xl font-black tracking-tighter text-white uppercase font-display text-display">Auto-Loc</div>
+<div class="hidden md:flex gap-6 pt-4">
+<a class="text-teal-500 dark:text-teal-400 border-b-2 border-teal-500 pb-4 font-inter antialiased text-sm font-medium hover:bg-slate-800/50 rounded-md transition-all" href="#">Catalog</a>
+<a class="text-slate-400 hover:text-white transition-colors duration-200 pb-4 font-inter antialiased text-sm font-medium hover:bg-slate-800/50 rounded-md transition-all" href="#">Reservations</a>
+<a class="text-slate-400 hover:text-white transition-colors duration-200 pb-4 font-inter antialiased text-sm font-medium hover:bg-slate-800/50 rounded-md transition-all" href="#">Fleet</a>
+<a class="text-slate-400 hover:text-white transition-colors duration-200 pb-4 font-inter antialiased text-sm font-medium hover:bg-slate-800/50 rounded-md transition-all" href="#">Clients</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">search</span>
+<input class="bg-surface-container-highest border border-surface-container-high rounded-full pl-10 pr-4 py-2 text-sm text-on-surface focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary w-64 transition-all" placeholder="Search vehicles..." type="text"/>
+</div>
+<button class="text-slate-400 hover:text-white transition-colors duration-200 p-2 hover:bg-slate-800/50 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-slate-400 hover:text-white transition-colors duration-200 p-2 hover:bg-slate-800/50 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-surface-container-high ml-2 cursor-pointer hover:opacity-80 transition-opacity">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="A close up professional headshot of a person looking at the camera. The lighting is soft and even. The background is slightly blurred and neutral in color, creating a modern corporate aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8UZHnXn0Gtdp4zb9aP32exQQL8jrlI2u476W2zVKMcxASMS1kd9y_v4bj6v_-Ur7Ed9_T06jSbkpleW2jCkIPc18vsn5YJvYtK4ROVgx4Tbq9xXcPuFkNwGsPmBJuZdz2XZQNpfWJf_fus1BZoBujPEJiNSBxaXtJDpXG1hGTUK6bi_XpEpXLLJGvXCj7xdwgOjHq3nO4XH3wfZkiQT56CFhMf52BwaCfJL0YaopFKlP99Q4ymLhEu71-2Ch7JaYJCo-BFgj_a7Y"/>
+</div>
+</div>
+</nav>
+<!-- Main Content -->
+<main class="flex-grow p-gutter md:px-margin max-w-7xl mx-auto w-full">
+<!-- Header & Filters -->
+<div class="mb-lg flex flex-col gap-md items-center">
+<h1 class="font-h1 text-h1 text-on-surface text-center mb-sm">Fleet Catalog</h1>
+<div class="flex gap-sm p-sm bg-surface-container-low rounded-full border border-surface-container-high w-fit justify-center mx-auto overflow-x-auto max-w-full no-scrollbar">
+<button class="px-lg py-2 rounded-full bg-secondary text-on-secondary font-label-md text-label-md whitespace-nowrap">All</button>
+<button class="px-lg py-2 rounded-full text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high font-label-md text-label-md transition-colors whitespace-nowrap">SUV</button>
+<button class="px-lg py-2 rounded-full text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high font-label-md text-label-md transition-colors whitespace-nowrap">Sedan</button>
+<button class="px-lg py-2 rounded-full text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high font-label-md text-label-md transition-colors whitespace-nowrap">Electric</button>
+<button class="px-lg py-2 rounded-full text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high font-label-md text-label-md transition-colors whitespace-nowrap">Luxury</button>
+</div>
+</div>
+<!-- Vehicle Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-lg">
+<!-- Card 1 -->
+<div class="bg-surface-container-low border border-surface-container-high rounded-xl overflow-hidden hover:border-outline-variant transition-colors group flex flex-col h-full">
+<div class="aspect-[16/9] w-full overflow-hidden relative">
+<img alt="Tesla Model 3" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A sleek black Tesla Model 3 parked in a modern, minimalist architectural setting. The lighting is moody and sophisticated, highlighting the car's curves against the deep blue and slate tones of the background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuADapAc-2-e5mwYdU4LvEYRV_rkoy59cCzjvw8tvwwYx3WWSkg2GLI0s2kbowT9Ov9FnaGUKOsH4ogwjogNV92JmOGm2647zYCCWQS5j5_-WEsAJKF7261gbH-8LBlivc-G1tJS5EsJ6dCKbbhZPrqeqjG6MeO_GUesBz0J5XHDXX3WXWxTQICSX1IlZNws84E9RGrjOTY3VWwq8eyldSMEt90_Bl3fMIbwbHep2gK7CYGk3UDTf8va94F9gO23vefO2KJQP0diYnE"/>
+<div class="absolute top-sm right-sm bg-surface-container/80 backdrop-blur-md px-sm py-unit rounded-md border border-surface-container-high flex items-center gap-unit">
+<div class="w-2 h-2 rounded-full bg-secondary"></div>
+<span class="font-label-sm text-label-sm text-on-surface">Available</span>
+</div>
+</div>
+<div class="p-md flex flex-col flex-grow">
+<div class="flex justify-between items-start mb-sm">
+<div>
+<h3 class="font-h2 text-h2 text-on-surface mb-unit">Tesla Model 3</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Electric Sedan</p>
+</div>
+<div class="text-right">
+<div class="font-body-lg text-body-lg text-on-surface font-semibold">$85<span class="font-body-sm text-body-sm text-on-surface-variant font-normal">/day</span></div>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-sm mb-lg mt-auto pt-md border-t border-surface-container-high">
+<div class="flex flex-col items-center gap-unit text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">settings</span>
+<span class="font-label-sm text-label-sm">Auto</span>
+</div>
+<div class="flex flex-col items-center gap-unit text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">group</span>
+<span class="font-label-sm text-label-sm">5 Seats</span>
+</div>
+<div class="flex flex-col items-center gap-unit text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">electric_car</span>
+<span class="font-label-sm text-label-sm">Electric</span>
+</div>
+</div>
+<button class="w-full bg-surface-container-highest hover:bg-primary-container text-primary font-label-md text-label-md py-sm rounded-lg border border-surface-container-high transition-colors">View Details</button>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-low border border-surface-container-high rounded-xl overflow-hidden hover:border-outline-variant transition-colors group flex flex-col h-full">
+<div class="aspect-[16/9] w-full overflow-hidden relative">
+<img alt="Range Rover Sport" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A luxurious white Range Rover Sport parked against a dark, textured wall. The lighting is dramatic, emphasizing the vehicle's robust design and premium feel, aligning with the dark, sophisticated aesthetic of the extranet." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9IKrruElb_KcXT6cpE07lJ374hotQzpa6VT8T6g7Tufw4q0dY7Wk0vto58P7R_Cx5evDAw5PPOeSuM643rqISCMYaqfA9uV6X8Fp1U3q2gYzqgjSdSsTiuKaYM2aXYrcIsWy6_rvGnOwkrEjC8dh8nrpJzbwkKvAeogOa_JVUSIj37sPI7bL6nl1JpNghzvfjqnan6EwnB-aw1zOIY73W9gyjpmEsW5bmEPq4yO8OMgD8zuDtbxw6OPKrYXwL0gL0z5Sl4YWtF4E"/>
+<div class="absolute top-sm right-sm bg-surface-container/80 backdrop-blur-md px-sm py-unit rounded-md border border-surface-container-high flex items-center gap-unit">
+<div class="w-2 h-2 rounded-full bg-error"></div>
+<span class="font-label-sm text-label-sm text-on-surface">Rented</span>
+</div>
+</div>
+<div class="p-md flex flex-col flex-grow">
+<div class="flex justify-between items-start mb-sm">
+<div>
+<h3 class="font-h2 text-h2 text-on-surface mb-unit">Range Rover Sport</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Luxury SUV</p>
+</div>
+<div class="text-right">
+<div class="font-body-lg text-body-lg text-on-surface font-semibold">$150<span class="font-body-sm text-body-sm text-on-surface-variant font-normal">/day</span></div>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-sm mb-lg mt-auto pt-md border-t border-surface-container-high">
+<div class="flex flex-col items-center gap-unit text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">settings</span>
+<span class="font-label-sm text-label-sm">Auto</span>
+</div>
+<div class="flex flex-col items-center gap-unit text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">group</span>
+<span class="font-label-sm text-label-sm">7 Seats</span>
+</div>
+<div class="flex flex-col items-center gap-unit text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">local_gas_station</span>
+<span class="font-label-sm text-label-sm">Petrol</span>
+</div>
+</div>
+<button class="w-full bg-surface-container-highest hover:bg-primary-container text-primary font-label-md text-label-md py-sm rounded-lg border border-surface-container-high transition-colors">View Details</button>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-container-low border border-surface-container-high rounded-xl overflow-hidden hover:border-outline-variant transition-colors group flex flex-col h-full">
+<div class="aspect-[16/9] w-full overflow-hidden relative">
+<img alt="BMW 5 Series" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A sleek, dark grey BMW 5 Series sedan photographed in a studio setting. The lighting is highly controlled to create sharp reflections on the vehicle's bodywork, matching the precision and premium feel of a corporate extranet." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA44WkHZB0KvwpBUvmCRdO-AOnNK8NvBKCjQKvsAjVWKpMDJGqdZUjEQmTV6hhIPnm-vYpqo9ZFfTaaR6bjV34mzB8NhNpxpeo-g-bo0NmNZbdFh1pbdJXGs8lJJEfeqi2efRSL8mtr6QpAiLCG-kK5bQCMWlBYtjBNRruyAvwaw_1kv_6cWVwG9ZqnmsYuxZhBMEwgVvfomg7HjRME382lnlUnyuQ10_TGDKkP6Jw9afb733XOe9fhMuGMP_jPtfcn-7Pz2ZsKjm4"/>
+<div class="absolute top-sm right-sm bg-surface-container/80 backdrop-blur-md px-sm py-unit rounded-md border border-surface-container-high flex items-center gap-unit">
+<div class="w-2 h-2 rounded-full bg-secondary"></div>
+<span class="font-label-sm text-label-sm text-on-surface">Available</span>
+</div>
+</div>
+<div class="p-md flex flex-col flex-grow">
+<div class="flex justify-between items-start mb-sm">
+<div>
+<h3 class="font-h2 text-h2 text-on-surface mb-unit">BMW 5 Series</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Executive Sedan</p>
+</div>
+<div class="text-right">
+<div class="font-body-lg text-body-lg text-on-surface font-semibold">$110<span class="font-body-sm text-body-sm text-on-surface-variant font-normal">/day</span></div>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-sm mb-lg mt-auto pt-md border-t border-surface-container-high">
+<div class="flex flex-col items-center gap-unit text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">settings</span>
+<span class="font-label-sm text-label-sm">Auto</span>
+</div>
+<div class="flex flex-col items-center gap-unit text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">group</span>
+<span class="font-label-sm text-label-sm">5 Seats</span>
+</div>
+<div class="flex flex-col items-center gap-unit text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">local_gas_station</span>
+<span class="font-label-sm text-label-sm">Hybrid</span>
+</div>
+</div>
+<button class="w-full bg-surface-container-highest hover:bg-primary-container text-primary font-label-md text-label-md py-sm rounded-lg border border-surface-container-high transition-colors">View Details</button>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-slate-900 dark:bg-slate-950 docked full-width bottom-0 border-t border-slate-800 dark:border-slate-700 flex justify-between items-center w-full py-6 px-8 mt-xl">
+<div class="font-inter text-xs text-slate-500">© 2024 Auto-Loc Premium. All rights reserved.</div>
+<div class="flex gap-4">
+<a class="text-slate-500 hover:text-slate-300 font-inter text-xs hover:text-white transition-colors" href="#">Terms of Service</a>
+<a class="text-slate-500 hover:text-slate-300 font-inter text-xs hover:text-white transition-colors" href="#">Privacy Policy</a>
+<a class="text-slate-500 hover:text-slate-300 font-inter text-xs hover:text-white transition-colors" href="#">Fleet Support</a>
+</div>
+</footer>
+</body></html>
