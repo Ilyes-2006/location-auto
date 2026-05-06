@@ -82,7 +82,12 @@ export default function ClientSidebar() {
           </div>
         ) : (
           <>
-            <div className="flex items-center gap-3 mb-3">
+            <NavLink 
+              to="/client/profile"
+              className={({ isActive }) => 
+                `flex items-center gap-3 mb-3 p-2 rounded-xl transition-all ${isActive ? 'bg-primary-800/50 ring-1 ring-primary-700' : 'hover:bg-primary-800/30'}`
+              }
+            >
               <div className="w-8 h-8 rounded-full bg-info-dark border border-info flex items-center justify-center text-white text-xs font-bold uppercase">
                 {user.email.substring(0, 2)}
               </div>
@@ -90,7 +95,7 @@ export default function ClientSidebar() {
                 <p className="text-white text-xs font-semibold truncate">{user.email}</p>
                 <p className="text-primary-500 text-[11px] uppercase">{isSuperuser ? 'Superuser' : 'Client'}</p>
               </div>
-            </div>
+            </NavLink>
             <SignOutButton />
           </>
         )}

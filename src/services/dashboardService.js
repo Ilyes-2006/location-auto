@@ -7,7 +7,7 @@ export const dashboardService = {
       const { data: revenueData, error: revenueError } = await supabase
         .from('rentals')
         .select('total_price')
-        .in('rental_status', ['CONFIRMED', 'ACTIVE', 'COMPLETED']);
+        .in('rental_status', ['CONFIRMED', 'COMPLETED']);
       
       if (revenueError) throw revenueError;
       const totalRevenueValue = revenueData.reduce((sum, r) => sum + (Number(r.total_price) || 0), 0);

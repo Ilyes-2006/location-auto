@@ -11,6 +11,7 @@ const mapVehicle = (v) => ({
   category: v.category || 'Premium',
   seats: v.seats || 5,
   transmission: v.transmission || 'Automatic',
+  imgUrl: v.img_url || null,
   imgColor: v.img_color || '#3b82f6',
   // Other UI-only or secondary fields
   range: v.range || 'N/A',

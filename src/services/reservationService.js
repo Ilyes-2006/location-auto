@@ -26,6 +26,7 @@ export const reservationService = {
         return {
           ...r,
           id: r.id,
+          vehicle: vehicle,
           vehicleName: vehicle ? `${vehicle.brand} ${vehicle.model}` : 'Unknown Vehicle',
           totalPrice: r.total_price,
           status: r.rental_status,
@@ -163,6 +164,7 @@ export const reservationService = {
           id: r.id,
           customerName: user?.full_name || 'Unknown',
           customerPhone: user?.phone || '—',
+          vehicle: vehicle,
           vehicleName: vehicle ? `${vehicle.brand} ${vehicle.model}` : 'N/A',
           vehicleCategory: vehicle?.category || 'Standard',
           status: r.rental_status,

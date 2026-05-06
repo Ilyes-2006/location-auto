@@ -8,6 +8,7 @@ import MetricCard from '../components/ui/MetricCard';
 import PageTransition from '../components/ui/PageTransition';
 import TopBar from '../components/layout/TopBar';
 import { dashboardService } from '../services/dashboardService';
+import { useLanguage } from '../context/LanguageContext';
 
 const metricConfig = [
   { key: 'totalRevenue',     icon: TrendingUp },
@@ -25,6 +26,7 @@ const iconMap = {
 };
 
 export default function Dashboard() {
+  const { t } = useLanguage();
   const [metrics, setMetrics] = useState(null);
   const [activity, setActivity] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -45,7 +47,7 @@ export default function Dashboard() {
   if (loading) {
     return (
       <PageTransition>
-        <TopBar title="Overview" subtitle="Real-time metrics for Auto-Loc fleet operations." />
+        <TopBar title={t('overview')} subtitle={t('realTimeMetrics')} />
         <div className="p-20 flex justify-center">
           <div className="w-10 h-10 border-4 border-teal/20 border-t-teal rounded-full animate-spin" />
         </div>
@@ -55,7 +57,7 @@ export default function Dashboard() {
 
   return (
     <PageTransition>
-      <TopBar title="Overview" subtitle="Real-time metrics for Auto-Loc fleet operations." />
+      <TopBar title={t('overview')} subtitle={t('realTimeMetrics')} />
 
       <div className="p-6 space-y-6 max-w-[1440px] mx-auto">
         {/* Metrics grid */}
@@ -66,7 +68,7 @@ export default function Dashboard() {
               <MetricCard
                 key={key}
                 index={i}
-                label={m.label}
+                label={t(key)}
                 value={m.value}
                 sub={m.sub}
                 change={m.change}
@@ -87,16 +89,16 @@ export default function Dashboard() {
           >
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h3 className="text-base font-semibold text-primary-900">System Capacity</h3>
-                <p className="text-xs text-primary-400 mt-0.5">Live fleet availability overview</p>
+                <h3 className="text-base font-semibold text-primary-900">{t('systemCapacity')}</h3>
+                <p className="text-xs text-primary-400 mt-0.5">{t('liveFleetOverview')}</p>
               </div>
-              <span className="chip chip-available">Live</span>
+              <span className="chip chip-available">{t('live')}</span>
             </div>
 
             <div className="h-40 flex items-center justify-center bg-primary-50/50 rounded-2xl border border-dashed border-primary-200">
                <div className="text-center">
                  <div className="text-4xl font-black text-primary-900">{metrics?.utilizationRate.value}</div>
-                 <div className="text-xs text-primary-400 uppercase tracking-widest font-bold mt-1">Fleet Efficiency</div>
+                 <div className="text-xs text-primary-400 uppercase tracking-widest font-bold mt-1">{t('fleetEfficiency')}</div>
                </div>
             </div>
           </motion.div>
@@ -108,9 +110,9 @@ export default function Dashboard() {
             transition={{ delay: 0.45, duration: 0.4 }}
             className="section-card p-6"
           >
-            <div className="flex items-center justify-between mb-5">
-              <h3 className="text-base font-semibold text-primary-900">Recent Activity</h3>
-              <button className="text-xs text-teal font-medium hover:underline">View all</button>
+             <div className="flex items-center justify-between mb-5">
+              <h3 className="text-base font-semibold text-primary-900">{t('recentActivity')}</h3>
+              <button className="text-xs text-teal font-medium hover:underline">{t('viewAll')}</button>
             </div>
 
             <div className="space-y-4">
@@ -132,9 +134,9 @@ export default function Dashboard() {
                   </div>
                 );
               })}
-              {activity.length === 0 && (
+               {activity.length === 0 && (
                 <div className="py-10 text-center text-primary-400 text-xs">
-                  No recent activity found.
+                  {t('noRecentActivity')}
                 </div>
               )}
             </div>

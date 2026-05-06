@@ -4,20 +4,19 @@ import { Search, CheckCircle, XCircle, Clock, Calendar, Car, Filter, ChevronRigh
 import PageTransition from '../components/ui/PageTransition';
 import TopBar from '../components/layout/TopBar';
 import { reservationService } from '../services/reservationService';
+import { useLanguage } from '../context/LanguageContext';
 
 const STATUS_TABS = [
-  { key: 'ALL', label: 'All' },
-  { key: 'PENDING', label: 'Pending' },
-  { key: 'CONFIRMED', label: 'Confirmed' },
-  { key: 'ACTIVE', label: 'Active' },
-  { key: 'COMPLETED', label: 'Completed' },
-  { key: 'CANCELLED', label: 'Cancelled' },
+  { key: 'ALL', labelKey: 'all' },
+  { key: 'PENDING', labelKey: 'pending' },
+  { key: 'CONFIRMED', labelKey: 'confirmed' },
+  { key: 'COMPLETED', labelKey: 'completed' },
+  { key: 'CANCELLED', labelKey: 'cancelled' },
 ];
 
 const statusStyles = {
   PENDING: 'bg-amber-50 text-amber-700 border-amber-200',
   CONFIRMED: 'bg-teal/10 text-teal border-teal/20',
-  ACTIVE: 'bg-blue-50 text-blue-700 border-blue-200',
   COMPLETED: 'bg-emerald-50 text-emerald-700 border-emerald-200',
   CANCELLED: 'bg-red-50 text-red-600 border-red-200',
 };
@@ -28,6 +27,7 @@ const rowVariants = {
 };
 
 export default function AdminReservations() {
+  const { t } = useLanguage();
   const [reservations, setReservations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
@@ -50,10 +50,10 @@ export default function AdminReservations() {
       await reservationService.updateReservationStatus(resId, newStatus);
       
       if (newStatus === 'CONFIRMED') {
-        setToastMsg('Réservation confirmée avec succès');
+        setToastMsg(t('reservationConfirmed'));
         setTimeout(() => setToastMsg(''), 3000);
       } else if (newStatus === 'CANCELLED') {
-        setToastMsg('Réservation annulée');
+        setToastMsg(t('reservationCancelled'));
         setTimeout(() => setToastMsg(''), 3000);
       }
       
@@ -78,16 +78,16 @@ export default function AdminReservations() {
 
   return (
     <PageTransition>
-      <TopBar title="Reservations" subtitle="Review, confirm or cancel customer bookings." />
+      <TopBar title={t('reservations')} subtitle={t('reviewBookings')} />
 
       <div className="p-6 max-w-[1440px] mx-auto space-y-5">
         {/* Stats summary */}
         <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
           {[
-            { label: 'Total', value: reservations.length, icon: Calendar, color: 'text-primary-600' },
-            { label: 'Pending', value: pendingCount, icon: Clock, color: 'text-amber-600' },
-            { label: 'Confirmed', value: reservations.filter(r => r.status === 'CONFIRMED').length, icon: CheckCircle, color: 'text-teal' },
-            { label: 'Cancelled', value: reservations.filter(r => r.status === 'CANCELLED').length, icon: XCircle, color: 'text-red-500' },
+            { label: t('all'), value: reservations.length, icon: Calendar, color: 'text-primary-600' },
+            { label: t('pending'), value: pendingCount, icon: Clock, color: 'text-amber-600' },
+            { label: t('confirmed'), value: reservations.filter(r => r.status === 'CONFIRMED').length, icon: CheckCircle, color: 'text-teal' },
+            { label: t('cancelled'), value: reservations.filter(r => r.status === 'CANCELLED').length, icon: XCircle, color: 'text-red-500' },
           ].map(({ label, value, icon: Icon, color }, i) => (
             <motion.div
               key={label}
@@ -113,7 +113,7 @@ export default function AdminReservations() {
             <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-primary-400" />
             <input
               className="input-field pl-9 w-64 text-xs py-1.5"
-              placeholder="Search by customer, vehicle, or ID…"
+              placeholder={t('searchByCustomer')}
               value={search}
               onChange={e => setSearch(e.target.value)}
             />
@@ -129,7 +129,7 @@ export default function AdminReservations() {
                     : 'text-primary-500 hover:text-primary-700'
                 }`}
               >
-                {tab.label}
+                {t(tab.labelKey)}
                 {tab.key === 'PENDING' && pendingCount > 0 && (
                   <span className="ml-1.5 bg-amber-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full">
                     {pendingCount}
@@ -150,19 +150,19 @@ export default function AdminReservations() {
           {loading ? (
             <div className="py-20 flex flex-col items-center justify-center text-primary-400">
               <div className="w-10 h-10 border-4 border-teal/20 border-t-teal rounded-full animate-spin mb-4" />
-              <p className="text-sm font-medium">Loading reservations...</p>
+              <p className="text-sm font-medium">{t('loadingReservations')}</p>
             </div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="bg-primary-50 border-b border-primary-200">
-                    <th className="th">Customer</th>
-                    <th className="th">Vehicle</th>
-                    <th className="th">Dates</th>
-                    <th className="th">Total</th>
-                    <th className="th">Status</th>
-                    <th className="th">Actions</th>
+                    <th className="th">{t('customer')}</th>
+                    <th className="th">{t('vehicle')}</th>
+                    <th className="th">{t('dates')}</th>
+                    <th className="th">{t('all')}</th>
+                    <th className="th">{t('status')}</th>
+                    <th className="th">{t('actions')}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -201,7 +201,7 @@ export default function AdminReservations() {
                       <td className="td font-bold text-primary-900">€{Number(r.totalPrice).toLocaleString()}</td>
                       <td className="td">
                         <span className={`text-[10px] font-bold uppercase tracking-caps px-2.5 py-1 rounded-full border ${statusStyles[r.status] || 'bg-primary-50 text-primary-600 border-primary-200'}`}>
-                          {r.status}
+                          {t(r.status.toLowerCase())}
                         </span>
                       </td>
                       <td className="td">
@@ -218,7 +218,7 @@ export default function AdminReservations() {
                                 ) : (
                                   <CheckCircle size={12} />
                                 )}
-                                Confirmer
+                                {t('confirmer')}
                               </button>
                               <button
                                 onClick={() => handleStatusChange(r.id, 'CANCELLED')}
@@ -226,7 +226,7 @@ export default function AdminReservations() {
                                 className="flex items-center gap-1 px-2.5 py-1.5 bg-red-50 text-red-600 text-[11px] font-bold rounded-lg hover:bg-red-100 transition-colors disabled:opacity-50"
                               >
                                 <XCircle size={12} />
-                                Cancel
+                                {t('cancel')}
                               </button>
                             </>
                           )}
@@ -236,11 +236,11 @@ export default function AdminReservations() {
                               disabled={actionLoading === r.id}
                               className="flex items-center gap-1 px-2.5 py-1.5 bg-emerald-50 text-emerald-700 text-[11px] font-bold rounded-lg hover:bg-emerald-100 transition-colors disabled:opacity-50"
                             >
-                              Complete
+                              {t('complete')}
                             </button>
                           )}
                           {(r.status === 'COMPLETED' || r.status === 'CANCELLED') && (
-                            <span className="text-[11px] text-primary-400">No actions</span>
+                            <span className="text-[11px] text-primary-400">{t('noActions')}</span>
                           )}
                           <button
                             onClick={() => setSelectedRes(r)}
@@ -256,7 +256,7 @@ export default function AdminReservations() {
                   {filtered.length === 0 && (
                     <tr>
                       <td colSpan={6} className="py-12 text-center text-primary-400 text-sm">
-                        No reservations found.
+                        {t('noReservationsFound')}
                       </td>
                     </tr>
                   )}
@@ -266,8 +266,8 @@ export default function AdminReservations() {
           )}
 
           <div className="px-4 py-3 bg-primary-50 border-t border-primary-100 flex items-center justify-between">
-            <p className="text-xs text-primary-500">
-              Showing <span className="font-semibold">{filtered.length}</span> of <span className="font-semibold">{reservations.length}</span> reservations
+           <p className="text-xs text-primary-500">
+              {t('showing')} <span className="font-semibold">{filtered.length}</span> {t('of')} <span className="font-semibold">{reservations.length}</span> {t('reservations')}
             </p>
           </div>
         </motion.div>
@@ -291,12 +291,21 @@ export default function AdminReservations() {
               className="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl p-8"
             >
               <div className="flex justify-between items-start mb-6">
-                <div>
-                  <span className={`text-[10px] font-bold uppercase tracking-caps px-2.5 py-1 rounded-full border ${statusStyles[selectedRes.status] || ''} mb-2 inline-block`}>
-                    {selectedRes.status}
-                  </span>
-                  <h3 className="text-xl font-bold text-primary-900">Reservation Details</h3>
-                  <p className="text-xs text-primary-400 font-mono mt-1">{selectedRes.id}</p>
+                <div className="flex gap-4">
+                  <div className="w-16 h-16 rounded-2xl bg-primary-50 overflow-hidden border border-primary-100 flex-shrink-0">
+                    {selectedRes.vehicle?.img_url ? (
+                      <img src={selectedRes.vehicle.img_url} className="w-full h-full object-cover" alt="Car" />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-primary-200"><Car size={24} /></div>
+                    )}
+                  </div>
+                  <div>
+                    <span className={`text-[10px] font-bold uppercase tracking-caps px-2.5 py-1 rounded-full border ${statusStyles[selectedRes.status] || ''} mb-2 inline-block`}>
+                      {t(selectedRes.status.toLowerCase())}
+                    </span>
+                    <h3 className="text-xl font-bold text-primary-900">{t('reservationDetails')}</h3>
+                    <p className="text-xs text-primary-400 font-mono mt-1">{selectedRes.id}</p>
+                  </div>
                 </div>
                 <button onClick={() => setSelectedRes(null)} className="p-2 text-primary-300 hover:text-primary-600 hover:bg-primary-50 rounded-xl transition-all">
                   <X size={20} />
@@ -306,24 +315,24 @@ export default function AdminReservations() {
               <div className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="p-4 bg-primary-50 rounded-2xl">
-                    <p className="text-[10px] font-bold text-primary-400 uppercase mb-1">Customer</p>
+                    <p className="text-[10px] font-bold text-primary-400 uppercase mb-1">{t('customer')}</p>
                     <p className="text-sm font-bold text-primary-900">{selectedRes.customerName}</p>
                     <p className="text-xs text-primary-500">{selectedRes.customerPhone}</p>
                   </div>
                   <div className="p-4 bg-primary-50 rounded-2xl">
-                    <p className="text-[10px] font-bold text-primary-400 uppercase mb-1">Vehicle</p>
+                    <p className="text-[10px] font-bold text-primary-400 uppercase mb-1">{t('vehicle')}</p>
                     <p className="text-sm font-bold text-primary-900">{selectedRes.vehicleName}</p>
                     <p className="text-xs text-primary-500">{selectedRes.vehicleCategory}</p>
                   </div>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="p-4 bg-primary-50 rounded-2xl">
-                    <p className="text-[10px] font-bold text-primary-400 uppercase mb-1">Dates</p>
+                    <p className="text-[10px] font-bold text-primary-400 uppercase mb-1">{t('dates')}</p>
                     <p className="text-sm font-bold text-primary-900">{new Date(selectedRes.start_date).toLocaleDateString()}</p>
                     <p className="text-xs text-primary-500">→ {new Date(selectedRes.end_date).toLocaleDateString()}</p>
                   </div>
                   <div className="p-4 bg-primary-50 rounded-2xl">
-                    <p className="text-[10px] font-bold text-primary-400 uppercase mb-1">Total Price</p>
+                    <p className="text-[10px] font-bold text-primary-400 uppercase mb-1">{t('totalCost')}</p>
                     <p className="text-2xl font-black text-primary-900">€{Number(selectedRes.totalPrice).toLocaleString()}</p>
                   </div>
                 </div>
@@ -335,13 +344,13 @@ export default function AdminReservations() {
                     onClick={() => { handleStatusChange(selectedRes.id, 'CONFIRMED'); setSelectedRes(null); }}
                     className="flex-1 btn-primary py-3 flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(20,184,166,0.6)] hover:shadow-[0_0_25px_rgba(20,184,166,0.8)]"
                   >
-                    <CheckCircle size={18} /> Confirmer
+                    <CheckCircle size={18} /> {t('confirmer')}
                   </button>
                   <button
                     onClick={() => { handleStatusChange(selectedRes.id, 'CANCELLED'); setSelectedRes(null); }}
                     className="flex-1 py-3 flex items-center justify-center gap-2 bg-red-50 text-red-600 font-bold rounded-xl hover:bg-red-100 transition-colors"
                   >
-                    <XCircle size={18} /> Cancel
+                    <XCircle size={18} /> {t('cancel')}
                   </button>
                 </div>
               )}

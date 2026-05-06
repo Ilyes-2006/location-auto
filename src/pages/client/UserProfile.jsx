@@ -97,8 +97,12 @@ export default function UserProfile() {
         >
           <div className="absolute top-0 right-0 w-64 h-64 bg-teal/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
           
-          <div className="w-24 h-24 rounded-full bg-primary-900 border-4 border-white shadow-card flex items-center justify-center text-white text-3xl font-bold shrink-0 relative z-10">
-            {(profile.full_name || '?').split(' ').map(n => n[0]).join('')}
+          <div className="w-24 h-24 rounded-full bg-primary-900 border-4 border-white shadow-card flex items-center justify-center text-white text-3xl font-bold shrink-0 relative z-10 overflow-hidden">
+            {profile.avatar_url ? (
+              <img src={profile.avatar_url} className="w-full h-full object-cover" alt="Profile" />
+            ) : (
+              (profile.full_name || '?').split(' ').map(n => n[0]).join('')
+            )}
           </div>
           
           <div className="flex-1 text-center md:text-left relative z-10">
@@ -214,6 +218,35 @@ export default function UserProfile() {
                 </div>
 
                 <div className="space-y-4">
+                  {/* Image Upload */}
+                  <div>
+                    <label className="text-[11px] font-bold text-primary-500 uppercase tracking-widest mb-1.5 block">Profile Picture</label>
+                    <div className="flex items-center gap-4">
+                      {profile.avatar_url ? (
+                        <img src={profile.avatar_url} className="w-12 h-12 rounded-full object-cover border border-primary-200" alt="Avatar Preview" />
+                      ) : (
+                        <div className="w-12 h-12 rounded-full bg-primary-100 flex items-center justify-center text-primary-400 font-bold">
+                          {(profile.full_name || '?').charAt(0)}
+                        </div>
+                      )}
+                      <input 
+                        type="file" 
+                        accept="image/*"
+                        className="text-xs file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-teal/10 file:text-teal hover:file:bg-teal/20"
+                        onChange={(e) => {
+                          const file = e.target.files[0];
+                          if (file) {
+                            const reader = new FileReader();
+                            reader.onloadend = () => {
+                              setProfile({...profile, avatar_url: reader.result});
+                            };
+                            reader.readAsDataURL(file);
+                          }
+                        }}
+                      />
+                    </div>
+                  </div>
+
                   <div>
                     <label className="text-[11px] font-bold text-primary-500 uppercase tracking-widest mb-1.5 block">Full Name</label>
                     <input 

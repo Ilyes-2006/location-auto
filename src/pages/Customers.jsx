@@ -130,8 +130,12 @@ export default function Customers() {
                     >
                       <td className="td">
                         <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-full bg-primary-800 flex items-center justify-center text-white text-xs font-bold shrink-0">
-                            {(c.full_name || '?').split(' ').map(n => n[0]).join('')}
+                          <div className="w-8 h-8 rounded-full bg-primary-800 flex items-center justify-center text-white text-xs font-bold shrink-0 overflow-hidden">
+                            {c.avatar_url ? (
+                              <img src={c.avatar_url} className="w-full h-full object-cover" alt="Avatar" />
+                            ) : (
+                              (c.full_name || '?').split(' ').map(n => n[0]).join('')
+                            )}
                           </div>
                           <div>
                             <p className="font-semibold text-primary-900">{c.full_name || 'Unnamed'}</p>

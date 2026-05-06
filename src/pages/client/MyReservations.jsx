@@ -39,7 +39,7 @@ export default function MyReservations() {
 
   return (
     <PageTransition>
-      <TopBar title="My Reservations" subtitle="View and manage your current and past bookings." />
+      <TopBar title={t('myReservations')} subtitle={t('viewAndManageBookings')} />
 
       <div className="p-6 max-w-[1440px] mx-auto space-y-5">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
@@ -47,7 +47,7 @@ export default function MyReservations() {
             <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-primary-400" />
             <input
               className="input-field pl-9 w-60 text-xs py-1.5"
-              placeholder="Search reservations…"
+              placeholder={t('searchReservations')}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
@@ -63,19 +63,19 @@ export default function MyReservations() {
           {loading ? (
             <div className="py-20 flex flex-col items-center justify-center text-primary-400">
               <div className="w-10 h-10 border-4 border-teal/20 border-t-teal rounded-full animate-spin mb-4" />
-              <p className="text-sm font-medium">Loading your reservations...</p>
+              <p className="text-sm font-medium">{t('loadingReservations')}</p>
             </div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="bg-primary-50 border-b border-primary-200">
-                    <th className="th">Booking ID</th>
-                    <th className="th">Vehicle</th>
-                    <th className="th">Dates</th>
-                    <th className="th">Location</th>
-                    <th className="th">Status</th>
-                    <th className="th">Total Cost</th>
+                    <th className="th">{t('bookingId')}</th>
+                    <th className="th">{t('vehicle')}</th>
+                    <th className="th">{t('dates')}</th>
+                    <th className="th">{t('location')}</th>
+                    <th className="th">{t('status')}</th>
+                    <th className="th">{t('totalCost')}</th>
                     <th className="th"></th>
                   </tr>
                 </thead>
@@ -110,7 +110,7 @@ export default function MyReservations() {
                           onClick={() => setSelectedRes(b)}
                           className="btn-secondary py-1 px-3 text-xs"
                         >
-                          View Details
+                          {t('viewDetails')}
                         </button>
                       </td>
                     </motion.tr>
@@ -119,7 +119,7 @@ export default function MyReservations() {
                   {filteredBookings.length === 0 && (
                     <tr>
                       <td colSpan={7} className="py-12 text-center text-primary-400">
-                        No reservations found.
+                        {t('noReservationsFound')}
                       </td>
                     </tr>
                   )}
@@ -149,13 +149,24 @@ export default function MyReservations() {
               className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl overflow-hidden"
             >
               <div className="flex h-[450px]">
-                {/* Left side: Car Image Placeholder */}
-                <div className="w-1/3 bg-primary-900 flex flex-col items-center justify-center p-6 text-white text-center">
-                  <div className="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center mb-4">
-                    <Info size={32} className="text-teal" />
+                {/* Left side: Car Image */}
+                <div className="w-1/3 bg-primary-900 relative overflow-hidden flex flex-col justify-end p-6 text-white">
+                  {selectedRes.vehicle?.img_url ? (
+                    <img 
+                      src={selectedRes.vehicle.img_url} 
+                      className="absolute inset-0 w-full h-full object-cover opacity-60"
+                      alt={selectedRes.vehicleName}
+                    />
+                  ) : (
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary-800 to-primary-950 flex items-center justify-center opacity-50">
+                      <Info size={48} className="text-primary-700" />
+                    </div>
+                  )}
+                  
+                  <div className="relative z-10">
+                    <h4 className="text-xl font-bold mb-1">{selectedRes.vehicleName}</h4>
+                    <p className="text-xs text-primary-300 uppercase tracking-widest">{selectedRes.vehicle?.category || 'Premium Selection'}</p>
                   </div>
-                  <h4 className="text-lg font-bold mb-2">{selectedRes.vehicleName}</h4>
-                  <p className="text-xs text-primary-400">{selectedRes.vehicle?.category || 'Premium Selection'}</p>
                 </div>
 
                 {/* Right side: Details */}
@@ -163,9 +174,9 @@ export default function MyReservations() {
                   <div className="flex justify-between items-start mb-6">
                     <div>
                       <span className="text-[10px] font-bold text-teal bg-teal/10 px-2 py-0.5 rounded uppercase tracking-caps mb-2 block w-fit">
-                        {selectedRes.status}
+                        {t(selectedRes.status?.toLowerCase())}
                       </span>
-                      <h3 className="text-xl font-bold text-primary-900">Reservation Details</h3>
+                      <h3 className="text-xl font-bold text-primary-900">{t('reservationDetails')}</h3>
                       <p className="text-xs text-primary-400 font-mono mt-1">{selectedRes.id}</p>
                     </div>
                     <button 
@@ -181,13 +192,13 @@ export default function MyReservations() {
                     <div className="grid grid-cols-2 gap-4">
                       <div className="p-4 bg-primary-50 rounded-2xl border border-primary-100">
                         <div className="flex items-center gap-2 mb-2 text-primary-500 font-bold text-[10px] uppercase tracking-widest">
-                          <Calendar size={12} className="text-teal" /> Pickup & Return
+                          <Calendar size={12} className="text-teal" /> {t('pickupReturn')}
                         </div>
                         <p className="text-sm font-bold text-primary-900">{selectedRes.date}</p>
                       </div>
                       <div className="p-4 bg-primary-50 rounded-2xl border border-primary-100">
                         <div className="flex items-center gap-2 mb-2 text-primary-500 font-bold text-[10px] uppercase tracking-widest">
-                          <MapPin size={12} className="text-teal" /> Location
+                          <MapPin size={12} className="text-teal" /> {t('location')}
                         </div>
                         <p className="text-sm font-bold text-primary-900">{selectedRes.location || 'Main Office'}</p>
                       </div>
@@ -195,36 +206,58 @@ export default function MyReservations() {
 
                     {/* Cost Breakdown */}
                     <div className="section-card p-5">
-                      <h4 className="text-[11px] font-bold text-primary-400 uppercase tracking-widest mb-4">Cost Breakdown</h4>
+                      <h4 className="text-[11px] font-bold text-primary-400 uppercase tracking-widest mb-4">{t('costBreakdown')}</h4>
                       <div className="space-y-3">
                         <div className="flex justify-between text-sm">
-                          <span className="text-primary-600">Daily Rate ({formatPrice(selectedRes.vehicle?.daily_rate || 0)})</span>
+                          <span className="text-primary-600">{t('dailyRate')} ({formatPrice(selectedRes.vehicle?.daily_rate || 0)})</span>
                           <span className="font-semibold text-primary-900">{formatPrice(selectedRes.totalPrice)}</span>
                         </div>
                         <div className="flex justify-between text-sm">
-                          <span className="text-primary-600">Service Fee</span>
-                          <span className="font-semibold text-emerald-600">FREE</span>
+                          <span className="text-primary-600">{t('serviceFee')}</span>
+                          <span className="font-semibold text-emerald-600">{t('free')}</span>
                         </div>
                         <div className="pt-3 border-t border-primary-100 flex justify-between items-center">
-                          <span className="font-bold text-primary-900">Total Charged</span>
+                          <span className="font-bold text-primary-900">{t('totalCharged')}</span>
                           <span className="text-lg font-black text-primary-900">{formatPrice(selectedRes.totalPrice)}</span>
                         </div>
                       </div>
                     </div>
 
                     {/* Payment Status */}
-                    <div className="flex items-center gap-3 p-4 bg-emerald-50 rounded-2xl border border-emerald-100">
-                      <div className="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center text-emerald-600">
-                        <CreditCard size={20} />
+                    {selectedRes.status?.toUpperCase() === 'CANCELLED' ? (
+                      <div className="flex items-center gap-3 p-4 bg-red-50 rounded-2xl border border-red-100">
+                        <div className="w-10 h-10 rounded-xl bg-red-100 flex items-center justify-center text-red-600">
+                          <X size={20} />
+                        </div>
+                        <div>
+                          <p className="text-sm font-bold text-red-900">{t('noPayment')}</p>
+                          <p className="text-xs text-red-600">{t('resCanceled')}</p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-sm font-bold text-emerald-900">Payment Successful</p>
-                        <p className="text-xs text-emerald-600">Billed to Visa ending in 4242</p>
+                    ) : selectedRes.status?.toUpperCase() === 'PENDING' ? (
+                      <div className="flex items-center gap-3 p-4 bg-amber-50 rounded-2xl border border-amber-100">
+                        <div className="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center text-amber-600">
+                          <Clock size={20} />
+                        </div>
+                        <div>
+                          <p className="text-sm font-bold text-amber-900">{t('paymentNotYet')}</p>
+                          <p className="text-xs text-amber-600">{t('waitingConfirmation')}</p>
+                        </div>
                       </div>
-                      <div className="ml-auto flex items-center gap-1 text-[10px] font-bold text-emerald-600 uppercase">
-                        <Clock size={12} /> Confirmed
+                    ) : (
+                      <div className="flex items-center gap-3 p-4 bg-emerald-50 rounded-2xl border border-emerald-100">
+                        <div className="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center text-emerald-600">
+                          <CreditCard size={20} />
+                        </div>
+                        <div>
+                          <p className="text-sm font-bold text-emerald-900">{t('paymentSuccessful')}</p>
+                          <p className="text-xs text-emerald-600">{t('billedDefault')}</p>
+                        </div>
+                        <div className="ml-auto flex items-center gap-1 text-[10px] font-bold text-emerald-600 uppercase">
+                          <Clock size={12} /> {t(selectedRes.status?.toLowerCase())}
+                        </div>
                       </div>
-                    </div>
+                    )}
                   </div>
                 </div>
               </div>

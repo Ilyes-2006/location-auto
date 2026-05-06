@@ -33,14 +33,18 @@ export default function CarDetailModal({ car, isOpen, onClose, onReserve }) {
           </button>
 
           {/* Image Side */}
-          <div className="w-full md:w-1/2 h-64 md:h-auto relative overflow-hidden" style={{ background: `linear-gradient(135deg, ${car.imgColor} 0%, ${car.imgColor}dd 100%)` }}>
-            <div className="absolute inset-0 flex items-center justify-center p-8">
-              <svg viewBox="0 0 200 80" className="w-full drop-shadow-2xl" fill="white">
-                <path d="M170,55 H30 Q20,55 18,48 L10,38 Q8,30 15,28 L45,25 Q55,14 80,12 L130,12 Q155,14 165,25 L185,28 Q192,30 190,38 L182,48 Q180,55 170,55 Z" />
-                <circle cx="52" cy="56" r="14" fill="#0f172a" opacity="0.6" />
-                <circle cx="148" cy="56" r="14" fill="#0f172a" opacity="0.6" />
-              </svg>
-            </div>
+          <div className="w-full md:w-1/2 h-64 md:h-auto relative overflow-hidden" style={{ background: car.imgUrl ? 'none' : `linear-gradient(135deg, ${car.imgColor} 0%, ${car.imgColor}dd 100%)` }}>
+            {car.imgUrl ? (
+              <img src={car.imgUrl} alt={`${car.brand} ${car.model}`} className="w-full h-full object-cover" />
+            ) : (
+              <div className="absolute inset-0 flex items-center justify-center p-8">
+                <svg viewBox="0 0 200 80" className="w-full drop-shadow-2xl" fill="white">
+                  <path d="M170,55 H30 Q20,55 18,48 L10,38 Q8,30 15,28 L45,25 Q55,14 80,12 L130,12 Q155,14 165,25 L185,28 Q192,30 190,38 L182,48 Q180,55 170,55 Z" />
+                  <circle cx="52" cy="56" r="14" fill="#0f172a" opacity="0.6" />
+                  <circle cx="148" cy="56" r="14" fill="#0f172a" opacity="0.6" />
+                </svg>
+              </div>
+            )}
             <div className="absolute bottom-4 left-6">
               <span className="px-3 py-1 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-[10px] font-bold uppercase tracking-widest">
                 {car.category}
