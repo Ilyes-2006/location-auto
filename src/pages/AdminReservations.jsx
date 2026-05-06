@@ -160,7 +160,7 @@ export default function AdminReservations() {
                     <th className="th">{t('customer')}</th>
                     <th className="th">{t('vehicle')}</th>
                     <th className="th">{t('dates')}</th>
-                    <th className="th">{t('all')}</th>
+                    <th className="th">{t('totalPrice')}</th>
                     <th className="th">{t('status')}</th>
                     <th className="th">{t('actions')}</th>
                   </tr>
@@ -218,7 +218,7 @@ export default function AdminReservations() {
                                 ) : (
                                   <CheckCircle size={12} />
                                 )}
-                                {t('confirmer')}
+                                {t('confirm')}
                               </button>
                               <button
                                 onClick={() => handleStatusChange(r.id, 'CANCELLED')}
@@ -336,6 +336,23 @@ export default function AdminReservations() {
                     <p className="text-2xl font-black text-primary-900">€{Number(selectedRes.totalPrice).toLocaleString()}</p>
                   </div>
                 </div>
+
+                {selectedRes.license_url && (
+                  <div className="p-4 bg-primary-50 rounded-2xl space-y-2">
+                    <p className="text-[10px] font-bold text-primary-400 uppercase flex items-center gap-2">
+                      <AlertCircle size={12} className="text-amber-500" />
+                      {t('licensePhoto')}
+                    </p>
+                    <div className="w-full aspect-video rounded-xl overflow-hidden border border-primary-100 bg-white">
+                      <img 
+                        src={selectedRes.license_url} 
+                        className="w-full h-full object-contain cursor-zoom-in" 
+                        alt="Driver License" 
+                        onClick={() => window.open(selectedRes.license_url, '_blank')}
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
 
               {selectedRes.status === 'PENDING' && (
@@ -344,7 +361,7 @@ export default function AdminReservations() {
                     onClick={() => { handleStatusChange(selectedRes.id, 'CONFIRMED'); setSelectedRes(null); }}
                     className="flex-1 btn-primary py-3 flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(20,184,166,0.6)] hover:shadow-[0_0_25px_rgba(20,184,166,0.8)]"
                   >
-                    <CheckCircle size={18} /> {t('confirmer')}
+                    <CheckCircle size={18} /> {t('confirm')}
                   </button>
                   <button
                     onClick={() => { handleStatusChange(selectedRes.id, 'CANCELLED'); setSelectedRes(null); }}

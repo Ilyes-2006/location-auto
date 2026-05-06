@@ -9,7 +9,10 @@ import TopBar from '../components/layout/TopBar';
 import { useAuth } from '../context/AuthContext';
 import { userService } from '../services/userService';
 
+import { useLanguage } from '../context/LanguageContext';
+
 export default function AdminProfile() {
+  const { t } = useLanguage();
   const { user, profile: authProfile, refreshProfile } = useAuth();
   const [profile, setProfile] = useState(null);
   const [saving, setSaving] = useState(false);
@@ -18,7 +21,7 @@ export default function AdminProfile() {
   useEffect(() => {
     if (authProfile) {
       setProfile({
-        full_name: authProfile.full_name || 'System Administrator',
+        full_name: authProfile.full_name || t('systemSuperuser'),
         phone: authProfile.phone || '',
         avatar_url: authProfile.avatar_url || ''
       });
@@ -36,11 +39,11 @@ export default function AdminProfile() {
         avatar_url: profile.avatar_url
       });
       await refreshProfile();
-      setMessage({ type: 'success', text: 'Administrative profile updated successfully.' });
+      setMessage({ type: 'success', text: t('profileUpdated') });
       setTimeout(() => setMessage(null), 3000);
     } catch (err) {
       console.error('Failed to save profile', err);
-      setMessage({ type: 'error', text: 'Failed to update profile. Please try again.' });
+      setMessage({ type: 'error', text: t('profileUpdateFailed') });
     } finally {
       setSaving(false);
     }
@@ -67,7 +70,7 @@ export default function AdminProfile() {
 
   return (
     <PageTransition>
-      <TopBar title="Admin Profile" subtitle="System administrator details and security settings." />
+      <TopBar title={t('adminProfile')} subtitle={t('adminProfileSub')} />
 
       <div className="p-6 max-w-5xl mx-auto space-y-6">
         <AnimatePresence>
@@ -119,7 +122,7 @@ export default function AdminProfile() {
             <div className="flex items-center justify-center md:justify-start gap-3 mb-2">
               <h2 className="text-3xl font-black text-primary-900 dark:text-white uppercase tracking-tight">{profile?.full_name}</h2>
               <span className="chip chip-available flex items-center gap-1 px-2 py-0.5 text-[10px]">
-                <Shield size={10} /> Superuser
+                <Shield size={10} /> {t('superuser')}
               </span>
             </div>
             <p className="text-primary-500 font-medium mb-6 flex items-center justify-center md:justify-start gap-2">
@@ -129,7 +132,7 @@ export default function AdminProfile() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-md">
               <div className="space-y-1.5">
                 <label className="text-[10px] font-black text-primary-400 uppercase tracking-widest flex items-center gap-2">
-                   Admin Name
+                   {t('adminName')}
                 </label>
                 <input 
                   className="input-field py-2"
@@ -139,7 +142,7 @@ export default function AdminProfile() {
               </div>
               <div className="space-y-1.5">
                 <label className="text-[10px] font-black text-primary-400 uppercase tracking-widest flex items-center gap-2">
-                   Contact Phone
+                   {t('contactPhone')}
                 </label>
                 <input 
                   className="input-field py-2"
@@ -153,7 +156,7 @@ export default function AdminProfile() {
           <div className="relative z-10 flex flex-col gap-2">
             <button onClick={handleSave} disabled={saving} className="btn-primary flex items-center gap-2 min-w-[160px] justify-center">
               {saving ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} />} 
-              {saving ? 'Saving...' : 'Save Profile'}
+              {saving ? t('saving') : t('saveProfile')}
             </button>
           </div>
         </motion.div>
@@ -169,17 +172,17 @@ export default function AdminProfile() {
               <div className="px-6 py-4 border-b border-primary-100 dark:border-primary-800 bg-primary-50/30 dark:bg-primary-800/20">
                 <h3 className="text-xs font-black text-primary-900 dark:text-white uppercase tracking-widest flex items-center gap-2">
                   <Lock size={16} className="text-teal" />
-                  Administrative Privileges
+                  {t('adminPrivileges')}
                 </h3>
               </div>
               <div className="p-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {[
-                  { label: 'Fleet Management', desc: 'Add, edit, and delete vehicles' },
-                  { label: 'User Administration', desc: 'Manage client accounts' },
-                  { label: 'Financial Access', desc: 'View revenue and process refunds' },
-                  { label: 'System Settings', desc: 'Modify global application config' },
-                  { label: 'API Access', desc: 'Manage integration keys' },
-                  { label: 'Reporting', desc: 'Generate system-wide data' }
+                  { label: t('fleetMgmt'), desc: t('fleetMgmtSub') },
+                  { label: t('userAdmin'), desc: t('userAdminSub') },
+                  { label: t('financialAccess'), desc: t('financialAccessSub') },
+                  { label: t('sysSettings'), desc: t('sysSettingsSub') },
+                  { label: t('apiAccess'), desc: t('apiAccessSub') },
+                  { label: t('reporting'), desc: t('reportingSub') }
                 ].map((perm, i) => (
                   <div key={i} className="p-4 rounded-xl border border-primary-100 dark:border-primary-800 bg-primary-50/20 dark:bg-primary-800/10 flex items-start gap-3 group hover:border-teal/30 transition-colors">
                     <div className="w-5 h-5 rounded-md bg-teal/10 flex items-center justify-center text-teal mt-0.5 group-hover:scale-110 transition-transform">
@@ -204,15 +207,15 @@ export default function AdminProfile() {
             <div className="px-6 py-4 border-b border-primary-100 dark:border-primary-800 bg-primary-50/30 dark:bg-primary-800/20">
               <h3 className="text-xs font-black text-primary-900 dark:text-white uppercase tracking-widest flex items-center gap-2">
                 <Activity size={16} className="text-teal" />
-                Auth History
+                {t('authHistory')}
               </h3>
             </div>
             <div className="p-6 space-y-6">
               {[
-                { action: 'Session Started', time: '12 mins ago', type: 'auth' },
-                { action: 'Vehicle Inventory Updated', time: '2 hours ago', type: 'fleet' },
-                { action: 'Customer Record Modified', time: '5 hours ago', type: 'user' },
-                { action: 'System Config Changed', time: 'Yesterday', type: 'admin' },
+                { action: t('sessionStarted'), time: t('agoMin', { count: 12 }), type: 'auth' },
+                { action: t('inventoryUpdated'), time: t('agoHour', { count: 2 }), type: 'fleet' },
+                { action: t('customerModified'), time: t('agoHour', { count: 5 }), type: 'user' },
+                { action: t('sysConfigChanged'), time: t('yesterday'), type: 'admin' },
               ].map((act, i) => (
                 <div key={i} className="flex gap-4">
                   <div className="w-1.5 h-1.5 rounded-full bg-teal mt-2 shrink-0 shadow-[0_0_8px_rgba(20,184,166,0.5)]" />

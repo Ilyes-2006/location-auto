@@ -96,9 +96,32 @@ export const vehicleService = {
    */
   async updateVehicle(id, updates) {
     try {
+      // Map UI keys back to DB columns
+      const dbUpdates = {
+        brand: updates.name?.split(' ')[0],
+        model: updates.name?.split(' ').slice(1).join(' '),
+        daily_rate: updates.dailyRate,
+        license_plate: updates.vin,
+        status: updates.status,
+        category: updates.category,
+        seats: updates.seats,
+        transmission: updates.transmission,
+        img_url: updates.imgUrl,
+        img_color: updates.color,
+        year: updates.year ? parseInt(updates.year) : undefined,
+        mileage: updates.mileage ? parseInt(updates.mileage) : undefined,
+        fuel: updates.fuel ? parseInt(updates.fuel) : undefined,
+        location: updates.location
+      };
+
+      // Remove undefined values
+      Object.keys(dbUpdates).forEach(key => 
+        dbUpdates[key] === undefined && delete dbUpdates[key]
+      );
+
       const { data, error } = await supabase
         .from('vehicles')
-        .update(updates)
+        .update(dbUpdates)
         .eq('id', id)
         .select();
 

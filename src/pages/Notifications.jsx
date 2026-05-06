@@ -5,8 +5,10 @@ import PageTransition from '../components/ui/PageTransition';
 import TopBar from '../components/layout/TopBar';
 import { useAuth } from '../context/AuthContext';
 import { notificationService } from '../services/notificationService';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function Notifications() {
+  const { t } = useLanguage();
   const { user, isSuperuser } = useAuth();
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -39,31 +41,31 @@ export default function Notifications() {
 
   return (
     <PageTransition>
-      <TopBar title="Notifications" subtitle="Restez informé de vos réservations et activités." />
+      <TopBar title={t('notifications')} subtitle={t('stayInformed')} />
       
       <div className="p-6 max-w-4xl mx-auto">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-lg font-bold text-primary-900 flex items-center gap-2">
             <Bell size={20} className="text-teal" />
-            Toutes les notifications
+            {t('allNotifications')}
           </h2>
           <button onClick={markAllRead} className="text-xs text-teal font-semibold hover:underline">
-            Tout marquer comme lu
+            {t('markAllRead')}
           </button>
         </div>
 
         {loading ? (
           <div className="py-20 flex flex-col items-center justify-center text-primary-400">
             <div className="w-10 h-10 border-4 border-teal/20 border-t-teal rounded-full animate-spin mb-4" />
-            <p className="text-sm font-medium">Loading notifications...</p>
+            <p className="text-sm font-medium">{t('loadingNotifications')}</p>
           </div>
         ) : notifications.length === 0 ? (
           <div className="py-20 flex flex-col items-center text-center">
             <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center text-primary-300 mb-4">
-              <Bell size={32} />
+               <Bell size={32} />
             </div>
-            <h3 className="text-lg font-bold text-primary-900">Aucune notification</h3>
-            <p className="text-sm text-primary-500">Pas de notification pour le moment.</p>
+            <h3 className="text-lg font-bold text-primary-900">{t('noNotifications')}</h3>
+            <p className="text-sm text-primary-500">{t('noNotificationsNow')}</p>
           </div>
         ) : (
           <motion.div
@@ -74,7 +76,7 @@ export default function Notifications() {
             {notifications.map((notif, i) => {
               const style = iconMap[notif.type] || iconMap.info;
               const Icon = style.Icon;
-              const timeAgo = getTimeAgo(notif.created_at);
+              const timeAgo = getTimeAgo(notif.created_at, t);
               
               return (
                 <motion.div
@@ -98,7 +100,7 @@ export default function Notifications() {
                     </div>
                     <p className="text-sm text-primary-600 mt-1">{notif.message}</p>
                     {notif.user?.full_name && (
-                      <p className="text-[11px] text-primary-400 mt-1">User: {notif.user.full_name}</p>
+                      <p className="text-[11px] text-primary-400 mt-1">{t('user')}: {notif.user.full_name}</p>
                     )}
                   </div>
                 </motion.div>
@@ -111,16 +113,16 @@ export default function Notifications() {
   );
 }
 
-function getTimeAgo(dateString) {
+function getTimeAgo(dateString, t) {
   const now = new Date();
   const date = new Date(dateString);
   const diffMs = now - date;
   const diffMins = Math.floor(diffMs / 60000);
   
-  if (diffMins < 1) return 'À l\'instant';
-  if (diffMins < 60) return `Il y a ${diffMins} min`;
+  if (diffMins < 1) return t('justNow');
+  if (diffMins < 60) return t('agoMin', { count: diffMins });
   const diffHours = Math.floor(diffMins / 60);
-  if (diffHours < 24) return `Il y a ${diffHours}h`;
+  if (diffHours < 24) return t('agoHour', { count: diffHours });
   const diffDays = Math.floor(diffHours / 24);
-  return `Il y a ${diffDays}j`;
+  return t('agoDay', { count: diffDays });
 }

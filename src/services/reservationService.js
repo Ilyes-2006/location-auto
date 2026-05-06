@@ -52,7 +52,8 @@ export const reservationService = {
           start_date: rentalData.startDate,
           end_date: rentalData.endDate,
           total_price: rentalData.totalPrice,
-          rental_status: 'PENDING'
+          rental_status: 'PENDING',
+          license_url: rentalData.licenseUrl
         }])
         .select();
 

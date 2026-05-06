@@ -22,22 +22,22 @@ export default function UserSettings() {
   const settingsGroups = [
     {
       id: 'Account',
-      title: 'Account',
+      title: t('account'),
       icon: User,
       items: [
-        { id: 'profile', label: 'Profile Information', sub: 'Name, email, and phone', type: 'link', onClick: () => setEditView('profile') },
-        { id: 'password', label: 'Security & Password', sub: 'Update your login credentials', type: 'link', onClick: () => setEditView('password') },
+        { id: 'profile', label: t('profileInformation'), sub: t('nameEmailPhone'), type: 'link', onClick: () => setEditView('profile') },
+        { id: 'password', label: t('securityPassword'), sub: t('updateLoginCredentials'), type: 'link', onClick: () => setEditView('password') },
       ],
     },
     {
       id: 'Regional',
-      title: 'Regional',
+      title: t('regional'),
       icon: Globe,
       items: [
         { 
           id: 'language',
-          label: 'Language', 
-          sub: 'Choose your preferred language', 
+          label: t('language'), 
+          sub: t('choosePreferredLanguage'), 
           type: 'select', 
           options: [
             { val: 'en', label: 'English' },
@@ -48,8 +48,8 @@ export default function UserSettings() {
         },
         { 
           id: 'currency',
-          label: 'Currency', 
-          sub: 'Choose your preferred currency', 
+          label: t('currency'), 
+          sub: t('choosePreferredCurrency'), 
           type: 'select',
           options: [
             { val: 'EUR', label: 'Euro (€)' },
@@ -65,7 +65,7 @@ export default function UserSettings() {
 
   return (
     <PageTransition>
-      <TopBar title={t('settings')} subtitle="Manage your account and preferences." />
+      <TopBar title={t('settings')} subtitle={t('manageAccountPreferences')} />
 
       <div className="p-6 max-w-5xl mx-auto flex flex-col md:flex-row gap-8">
         {/* Navigation Sidebar */}
@@ -174,6 +174,7 @@ export default function UserSettings() {
 }
 
 function ProfileEditForm({ profile, user, onBack, onSuccess }) {
+  const { t } = useLanguage();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     full_name: profile?.full_name || '',
@@ -210,7 +211,7 @@ function ProfileEditForm({ profile, user, onBack, onSuccess }) {
         <button onClick={onBack} className="p-2 hover:bg-primary-50 dark:hover:bg-primary-800 rounded-lg text-primary-400">
           <ArrowLeft size={18} />
         </button>
-        <h3 className="text-sm font-black text-primary-900 dark:text-white uppercase tracking-widest">Edit Profile</h3>
+        <h3 className="text-sm font-black text-primary-900 dark:text-white uppercase tracking-widest">{t('editProfile')}</h3>
       </div>
 
       <form onSubmit={handleSubmit} className="p-8 space-y-6">
@@ -227,13 +228,13 @@ function ProfileEditForm({ profile, user, onBack, onSuccess }) {
               <Camera size={14} />
             </button>
           </div>
-          <p className="text-[10px] text-primary-400 mt-2 font-bold uppercase tracking-wider">Change photo</p>
+          <p className="text-[10px] text-primary-400 mt-2 font-bold uppercase tracking-wider">{t('changePhoto')}</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
             <label className="text-[11px] font-bold text-primary-500 uppercase tracking-wider flex items-center gap-2">
-              <User size={12} /> Full Name
+              <User size={12} /> {t('fullName')}
             </label>
             <input
               className="input-field"
@@ -245,7 +246,7 @@ function ProfileEditForm({ profile, user, onBack, onSuccess }) {
           </div>
           <div className="space-y-2">
             <label className="text-[11px] font-bold text-primary-500 uppercase tracking-wider flex items-center gap-2">
-              <Phone size={12} /> Phone Number
+              <Phone size={12} /> {t('phoneNumber')}
             </label>
             <input
               className="input-field"
@@ -256,7 +257,7 @@ function ProfileEditForm({ profile, user, onBack, onSuccess }) {
           </div>
           <div className="space-y-2 md:col-span-2 opacity-60">
             <label className="text-[11px] font-bold text-primary-500 uppercase tracking-wider flex items-center gap-2">
-              <Mail size={12} /> Email Address (Read-only)
+              <Mail size={12} /> {t('emailAddress')}
             </label>
             <input
               className="input-field bg-primary-50 dark:bg-primary-800 border-none cursor-not-allowed"
@@ -269,10 +270,10 @@ function ProfileEditForm({ profile, user, onBack, onSuccess }) {
         {error && <p className="text-xs text-red-500 font-bold">{error}</p>}
 
         <div className="flex justify-end gap-3 pt-6">
-          <button type="button" onClick={onBack} className="btn-ghost text-xs">Cancel</button>
+          <button type="button" onClick={onBack} className="btn-ghost text-xs">{t('cancel')}</button>
           <button type="submit" disabled={loading} className="btn-primary min-w-[140px] justify-center gap-2 text-xs py-3">
             {loading ? <Loader2 size={16} className="animate-spin" /> : <Check size={16} />}
-            Save Profile
+            {t('saveProfile')}
           </button>
         </div>
       </form>
@@ -281,6 +282,7 @@ function ProfileEditForm({ profile, user, onBack, onSuccess }) {
 }
 
 function PasswordChangeForm({ onBack }) {
+  const { t } = useLanguage();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     newPassword: '',
@@ -293,11 +295,11 @@ function PasswordChangeForm({ onBack }) {
     e.preventDefault();
     setError(null);
     if (formData.newPassword !== formData.confirmPassword) {
-      setError("Passwords do not match");
+      setError(t('passwordsDoNotMatch'));
       return;
     }
     if (formData.newPassword.length < 6) {
-      setError("Password must be at least 6 characters");
+      setError(t('passwordMinLength'));
       return;
     }
 
@@ -325,21 +327,21 @@ function PasswordChangeForm({ onBack }) {
         <button onClick={onBack} className="p-2 hover:bg-primary-50 dark:hover:bg-primary-800 rounded-lg text-primary-400">
           <ArrowLeft size={18} />
         </button>
-        <h3 className="text-sm font-black text-primary-900 dark:text-white uppercase tracking-widest">Update Password</h3>
+        <h3 className="text-sm font-black text-primary-900 dark:text-white uppercase tracking-widest">{t('updatePassword')}</h3>
       </div>
 
       <form onSubmit={handleSubmit} className="p-8 space-y-6">
         <div className="p-4 bg-info/5 dark:bg-info/10 rounded-xl border border-info/10 flex items-start gap-3">
           <Shield size={18} className="text-info mt-0.5" />
           <p className="text-xs text-info-dark dark:text-info-light leading-relaxed">
-            Changing your password will update your login credentials. Make sure to use a strong password with at least 6 characters.
+            {t('passwordGuideline')}
           </p>
         </div>
 
         <div className="space-y-4 max-w-md">
           <div className="space-y-2">
             <label className="text-[11px] font-bold text-primary-500 uppercase tracking-wider flex items-center gap-2">
-              <Lock size={12} /> New Password
+              <Lock size={12} /> {t('newPassword')}
             </label>
             <input
               type="password"
@@ -352,7 +354,7 @@ function PasswordChangeForm({ onBack }) {
           </div>
           <div className="space-y-2">
             <label className="text-[11px] font-bold text-primary-500 uppercase tracking-wider flex items-center gap-2">
-              <Lock size={12} /> Confirm New Password
+              <Lock size={12} /> {t('confirmNewPassword')}
             </label>
             <input
               type="password"
@@ -368,16 +370,16 @@ function PasswordChangeForm({ onBack }) {
         {error && <p className="text-xs text-red-500 font-bold">{error}</p>}
         {success && (
           <div className="p-4 bg-success-bg dark:bg-success-text/20 text-success-text dark:text-teal-light rounded-xl flex items-center gap-2 text-xs font-bold">
-            <Check size={16} /> Password updated successfully! Redirecting...
+            <Check size={16} /> {t('passwordUpdated')} {t('redirecting')}
           </div>
         )}
 
         {!success && (
           <div className="flex justify-end gap-3 pt-6">
-            <button type="button" onClick={onBack} className="btn-ghost text-xs">Cancel</button>
+            <button type="button" onClick={onBack} className="btn-ghost text-xs">{t('cancel')}</button>
             <button type="submit" disabled={loading} className="btn-primary min-w-[140px] justify-center gap-2 text-xs py-3">
               {loading ? <Loader2 size={16} className="animate-spin" /> : <Check size={16} />}
-              Update Password
+              {t('updatePassword')}
             </button>
           </div>
         )}

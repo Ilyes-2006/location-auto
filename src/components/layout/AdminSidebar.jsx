@@ -40,7 +40,7 @@ export default function AdminSidebar() {
 
       {/* Nav */}
       <nav className="flex-1 px-3 py-4 space-y-0.5">
-        {adminNavItems.map(({ path, label, icon: Icon }, i) => (
+        {adminNavItems.map(({ path, labelKey, icon: Icon }, i) => (
           <motion.div key={path} custom={i} variants={linkVariants} initial="hidden" animate="visible">
             <NavLink
               to={path}
@@ -50,7 +50,7 @@ export default function AdminSidebar() {
               }
             >
               <Icon size={17} />
-              <span>{t(label.toLowerCase())}</span>
+              <span>{t(labelKey)}</span>
             </NavLink>
           </motion.div>
         ))}

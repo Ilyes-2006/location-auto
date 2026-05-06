@@ -170,7 +170,7 @@ export default function UserCatalog() {
             >
               <Zap size={14} className={availOnly ? 'fill-white' : ''} />
               <span className="hidden sm:inline">{t('availableOnly')}</span>
-              <span className="sm:hidden">Dispo</span>
+              <span className="sm:hidden">{t('availShort')}</span>
             </button>
 
             {/* Advanced Filters Toggle */}
@@ -263,7 +263,7 @@ export default function UserCatalog() {
                                   : 'bg-primary-50 dark:bg-primary-800 border-transparent dark:text-primary-400 hover:border-primary-200'
                               }`}
                             >
-                              {tr === '' ? 'All' : (tr === 'Automatic' ? t('automatic') : t('manual'))}
+                              {tr === '' ? t('all') : (tr === 'Automatic' ? t('automatic') : t('manual'))}
                             </button>
                           ))}
                         </div>
@@ -283,7 +283,7 @@ export default function UserCatalog() {
                                   : 'bg-primary-50 dark:bg-primary-800 border-transparent dark:text-primary-400 hover:border-primary-200'
                               }`}
                             >
-                              {s === '' ? 'All' : s}
+                              {s === '' ? t('all') : s}
                             </button>
                           ))}
                         </div>
@@ -302,7 +302,7 @@ export default function UserCatalog() {
                       </div>
                       <div className="flex items-center gap-3">
                         <div className="relative flex-1">
-                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[10px] font-bold text-primary-300">MIN</span>
+                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[10px] font-bold text-primary-300">{t('min')}</span>
                           <input
                             type="number"
                             placeholder="0"
@@ -312,7 +312,7 @@ export default function UserCatalog() {
                           />
                         </div>
                         <div className="relative flex-1">
-                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[10px] font-bold text-primary-300">MAX</span>
+                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[10px] font-bold text-primary-300">{t('max')}</span>
                           <input
                             type="number"
                             placeholder="500"
@@ -327,7 +327,7 @@ export default function UserCatalog() {
                           onClick={() => setShowFilters(false)}
                           className="btn-primary w-full py-2.5 text-xs"
                         >
-                          Show {filtered.length} Results
+                          {t('showResults', { count: filtered.length })}
                         </button>
                       </div>
                     </div>
@@ -352,7 +352,7 @@ export default function UserCatalog() {
           >
             <Filter size={48} className="mb-4 stroke-[1.5]" />
             <p className="text-base font-semibold">{t('noVehicles')}</p>
-            <p className="text-sm mt-1">{t('resetFiltersToSeeMore') || 'Try adjusting your search criteria'}</p>
+            <p className="text-sm mt-1">{t('resetFiltersToSeeMore')}</p>
             <button onClick={resetFilters} className="mt-6 btn-secondary text-xs px-6 py-2.5">
               {t('resetFilters')}
             </button>
@@ -408,7 +408,7 @@ export default function UserCatalog() {
                     <div className="text-center border-x border-primary-50 dark:border-primary-800/50">
                       <div className="text-primary-300 dark:text-primary-600 mb-0.5 flex justify-center"><Cog size={12} /></div>
                       <div className="text-[10px] font-bold text-primary-700 dark:text-primary-400 truncate px-1">
-                        {car.transmission === 'Automatic' ? 'Auto' : 'Manual'}
+                        {car.transmission === 'Automatic' ? t('auto') : t('manual')}
                       </div>
                     </div>
                     <div className="text-center">

@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { Mail, Lock, User, UserPlus, Car, AlertCircle, ArrowLeft, Phone } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { useLanguage } from '../context/LanguageContext';
 import PageTransition from '../components/ui/PageTransition';
 
 export default function SignUpPage() {
@@ -14,6 +15,7 @@ export default function SignUpPage() {
   const [error, setError] = useState('');
   const [isSigningUp, setIsSigningUp] = useState(false);
   const { signUp, loading: authLoading } = useAuth();
+  const { t } = useLanguage();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -21,7 +23,7 @@ export default function SignUpPage() {
     setError('');
 
     if (password !== confirmPassword) {
-      setError('Les mots de passe ne correspondent pas');
+      setError(t('passwordsMismatch'));
       return;
     }
     
@@ -42,14 +44,14 @@ export default function SignUpPage() {
         // Confirmation required
         navigate('/login', { 
           state: { 
-            message: "Inscription réussie ! Veuillez vérifier votre email pour confirmer votre compte avant de vous connecter." 
+            message: t('signupSuccess')
           } 
         });
       } else {
         navigate('/client/catalog');
       }
     } catch (err) {
-      setError('Une erreur est survenue lors de l\'inscription.');
+      setError(t('signupError'));
       setIsSigningUp(false);
     }
   };
@@ -74,7 +76,7 @@ export default function SignUpPage() {
               <Car size={32} />
             </div>
             <h1 className="text-3xl font-bold text-primary-900 tracking-tight">Auto-Loc</h1>
-            <p className="text-primary-500 mt-2">Créez votre compte client</p>
+            <p className="text-primary-500 mt-2">{t('createClientAccount')}</p>
           </motion.div>
 
           <motion.div
@@ -87,7 +89,7 @@ export default function SignUpPage() {
               onClick={() => navigate('/login')}
               className="flex items-center gap-1.5 text-xs text-primary-500 hover:text-teal transition-colors mb-6"
             >
-              <ArrowLeft size={14} /> Retour à la connexion
+              <ArrowLeft size={14} /> {t('backToLogin')}
             </button>
 
             {error && (
@@ -99,7 +101,7 @@ export default function SignUpPage() {
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-primary-700 uppercase tracking-caps ml-1">Nom complet</label>
+                <label className="text-xs font-semibold text-primary-700 uppercase tracking-caps ml-1">{t('fullName')}</label>
                 <div className="relative">
                   <User size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-primary-400" />
                   <input
@@ -131,7 +133,7 @@ export default function SignUpPage() {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-primary-700 uppercase tracking-caps ml-1">Téléphone</label>
+                <label className="text-xs font-semibold text-primary-700 uppercase tracking-caps ml-1">{t('phone')}</label>
                 <div className="relative">
                   <Phone size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-primary-400" />
                   <input
@@ -146,7 +148,7 @@ export default function SignUpPage() {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-primary-700 uppercase tracking-caps ml-1">Mot de passe</label>
+                <label className="text-xs font-semibold text-primary-700 uppercase tracking-caps ml-1">{t('password')}</label>
                 <div className="relative">
                   <Lock size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-primary-400" />
                   <input
@@ -162,7 +164,7 @@ export default function SignUpPage() {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-primary-700 uppercase tracking-caps ml-1">Confirmer le mot de passe</label>
+                <label className="text-xs font-semibold text-primary-700 uppercase tracking-caps ml-1">{t('confirmPassword')}</label>
                 <div className="relative">
                   <Lock size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-primary-400" />
                   <input
@@ -188,7 +190,7 @@ export default function SignUpPage() {
                   ) : (
                     <>
                       <UserPlus size={20} />
-                      Créer un compte
+                      {t('signUp')}
                     </>
                   )}
                 </button>
@@ -197,12 +199,12 @@ export default function SignUpPage() {
 
             <div className="mt-8 pt-6 border-t border-primary-100 text-center">
               <p className="text-sm text-primary-500">
-                Vous avez déjà un compte ?{' '}
+                {t('alreadyHaveAccount')}{' '}
                 <button 
                   onClick={() => navigate('/login')}
                   className="text-teal font-bold hover:underline"
                 >
-                  Se connecter
+                  {t('signIn')}
                 </button>
               </p>
             </div>

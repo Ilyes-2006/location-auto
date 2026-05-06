@@ -23,38 +23,38 @@ export default function SettingsPage() {
   const settingsGroups = [
     {
       id: 'Account',
-      title: 'Account',
+      title: t('account'),
       icon: User,
       items: [
-        { id: 'profile', label: 'Profile Information', sub: 'Name, email, and contact info', type: 'link', onClick: () => setEditView('profile') },
-        { id: 'password', label: 'Change Password', sub: 'Update your administrative credentials', type: 'link', onClick: () => setEditView('password') },
+        { id: 'profile', label: t('profileInfo'), sub: t('profileSub'), type: 'link', onClick: () => setEditView('profile') },
+        { id: 'password', label: t('changePassword'), sub: t('changePasswordSub'), type: 'link', onClick: () => setEditView('password') },
       ],
     },
     {
       id: 'Security',
-      title: 'Security',
+      title: t('security'),
       icon: Shield,
       items: [
-        { label: 'Two-Factor Authentication', sub: 'Enhance system security', type: 'toggle', default: true },
-        { label: 'Audit Log', sub: 'View administrative action history', type: 'link' },
+        { label: t('twoFactor'), sub: t('twoFactorSub'), type: 'toggle', default: true },
+        { label: t('auditLog'), sub: t('auditLogSub'), type: 'link' },
       ],
     },
     {
       id: 'Regional',
-      title: 'Regional',
+      title: t('regional'),
       icon: Globe,
       items: [
         { 
-          label: 'System Language', 
-          sub: 'Choose your preferred language', 
+          label: t('systemLanguage'), 
+          sub: t('chooseLanguage'), 
           type: 'select', 
           options: [{ val: 'en', label: 'EN' }, { val: 'fr', label: 'FR' }],
           current: lang,
           onSelect: setLang
         },
         { 
-          label: 'Default Currency', 
-          sub: 'Standard currency for financial data', 
+          label: t('defaultCurrency'), 
+          sub: t('currencySub'), 
           type: 'select',
           options: [{ val: 'EUR', label: 'EUR' }, { val: 'USD', label: 'USD' }],
           current: currency,
@@ -66,7 +66,7 @@ export default function SettingsPage() {
 
   return (
     <PageTransition>
-      <TopBar title={t('settings')} subtitle="Manage your account, security, and regional preferences." />
+      <TopBar title={t('settings')} subtitle={t('manageSettings')} />
 
       <div className="p-6 max-w-5xl mx-auto flex flex-col md:flex-row gap-8">
         {/* Navigation Sidebar */}
@@ -162,6 +162,7 @@ export default function SettingsPage() {
               <AdminProfileEdit 
                 profile={profile} 
                 user={user} 
+                t={t}
                 onBack={() => setEditView(null)} 
                 onSuccess={() => {
                   refreshProfile();
@@ -170,6 +171,7 @@ export default function SettingsPage() {
               />
             ) : (
               <AdminPasswordChange 
+                t={t}
                 onBack={() => setEditView(null)} 
               />
             )}
@@ -180,7 +182,7 @@ export default function SettingsPage() {
   );
 }
 
-function AdminProfileEdit({ profile, user, onBack, onSuccess }) {
+function AdminProfileEdit({ profile, user, t, onBack, onSuccess }) {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     full_name: profile?.full_name || '',
@@ -215,7 +217,7 @@ function AdminProfileEdit({ profile, user, onBack, onSuccess }) {
         <button onClick={onBack} className="p-2 hover:bg-primary-50 dark:hover:bg-primary-800 rounded-lg text-primary-400">
           <ArrowLeft size={18} />
         </button>
-        <h3 className="text-xs font-black text-primary-900 dark:text-white uppercase tracking-widest">Admin Profile</h3>
+        <h3 className="text-xs font-black text-primary-900 dark:text-white uppercase tracking-widest">{t('adminProfile')}</h3>
       </div>
 
       <form onSubmit={handleSubmit} className="p-8 space-y-6">
@@ -232,20 +234,20 @@ function AdminProfileEdit({ profile, user, onBack, onSuccess }) {
               <Camera size={14} />
             </button>
           </div>
-          <p className="text-[10px] text-primary-400 mt-3 font-black uppercase tracking-widest">System Superuser</p>
+          <p className="text-[10px] text-primary-400 mt-3 font-black uppercase tracking-widest">{t('systemSuperuser')}</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
-            <label className="text-[10px] font-black text-primary-400 uppercase tracking-widest flex items-center gap-2"><User size={12} /> Name</label>
+            <label className="text-[10px] font-black text-primary-400 uppercase tracking-widest flex items-center gap-2"><User size={12} /> {t('name')}</label>
             <input className="input-field" value={formData.full_name} onChange={e => setFormData({ ...formData, full_name: e.target.value })} required />
           </div>
           <div className="space-y-2">
-            <label className="text-[10px] font-black text-primary-400 uppercase tracking-widest flex items-center gap-2"><Phone size={12} /> Phone</label>
+            <label className="text-[10px] font-black text-primary-400 uppercase tracking-widest flex items-center gap-2"><Phone size={12} /> {t('phone')}</label>
             <input className="input-field" value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value })} />
           </div>
           <div className="space-y-2 md:col-span-2 opacity-50">
-            <label className="text-[10px] font-black text-primary-400 uppercase tracking-widest flex items-center gap-2"><Mail size={12} /> Admin Email</label>
+            <label className="text-[10px] font-black text-primary-400 uppercase tracking-widest flex items-center gap-2"><Mail size={12} /> {t('adminEmail')}</label>
             <input className="input-field bg-primary-50 dark:bg-primary-800 border-none cursor-not-allowed" value={formData.email} readOnly />
           </div>
         </div>
@@ -253,9 +255,9 @@ function AdminProfileEdit({ profile, user, onBack, onSuccess }) {
         {error && <p className="text-xs text-red-500 font-bold flex items-center gap-2"><AlertCircle size={14}/> {error}</p>}
 
         <div className="flex justify-end gap-3 pt-6">
-          <button type="button" onClick={onBack} className="btn-ghost text-xs">Cancel</button>
+          <button type="button" onClick={onBack} className="btn-ghost text-xs">{t('cancel')}</button>
           <button type="submit" disabled={loading} className="btn-primary min-w-[140px] justify-center gap-2 text-xs py-3">
-            {loading ? <Loader2 size={16} className="animate-spin" /> : <Check size={16} />} Save Changes
+            {loading ? <Loader2 size={16} className="animate-spin" /> : <Check size={16} />} {t('saveChanges')}
           </button>
         </div>
       </form>
@@ -263,7 +265,7 @@ function AdminProfileEdit({ profile, user, onBack, onSuccess }) {
   );
 }
 
-function AdminPasswordChange({ onBack }) {
+function AdminPasswordChange({ t, onBack }) {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({ newPassword: '', confirmPassword: '' });
   const [error, setError] = useState(null);
@@ -272,8 +274,8 @@ function AdminPasswordChange({ onBack }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
-    if (formData.newPassword !== formData.confirmPassword) { setError("Passwords do not match"); return; }
-    if (formData.newPassword.length < 8) { setError("Admin password must be at least 8 characters"); return; }
+    if (formData.newPassword !== formData.confirmPassword) { setError(t('passwordsMismatch')); return; }
+    if (formData.newPassword.length < 8) { setError(t('passwordTooShort')); return; }
 
     setLoading(true);
     try {
@@ -293,27 +295,27 @@ function AdminPasswordChange({ onBack }) {
         <button onClick={onBack} className="p-2 hover:bg-primary-50 dark:hover:bg-primary-800 rounded-lg text-primary-400">
           <ArrowLeft size={18} />
         </button>
-        <h3 className="text-xs font-black text-primary-900 dark:text-white uppercase tracking-widest">Update Credentials</h3>
+        <h3 className="text-xs font-black text-primary-900 dark:text-white uppercase tracking-widest">{t('updateCredentials')}</h3>
       </div>
 
       <form onSubmit={handleSubmit} className="p-8 space-y-6">
         <div className="p-4 bg-primary-900 text-white rounded-2xl flex items-start gap-4">
           <Shield size={24} className="text-teal mt-1 shrink-0" />
           <div>
-            <p className="text-xs font-bold uppercase tracking-widest text-teal mb-1">Security Protocol</p>
+            <p className="text-xs font-bold uppercase tracking-widest text-teal mb-1">{t('securityProtocol')}</p>
             <p className="text-[11px] text-primary-300 leading-relaxed">
-              As a system administrator, you must maintain a high-entropy password. We recommend at least 12 characters including symbols.
+              {t('securitySub')}
             </p>
           </div>
         </div>
 
         <div className="space-y-4 max-w-md">
           <div className="space-y-2">
-            <label className="text-[10px] font-black text-primary-400 uppercase tracking-widest flex items-center gap-2"><Lock size={12} /> New Password</label>
+            <label className="text-[10px] font-black text-primary-400 uppercase tracking-widest flex items-center gap-2"><Lock size={12} /> {t('newPassword')}</label>
             <input type="password" className="input-field" value={formData.newPassword} onChange={e => setFormData({ ...formData, newPassword: e.target.value })} placeholder="••••••••" required />
           </div>
           <div className="space-y-2">
-            <label className="text-[10px] font-black text-primary-400 uppercase tracking-widest flex items-center gap-2"><Lock size={12} /> Confirm Password</label>
+            <label className="text-[10px] font-black text-primary-400 uppercase tracking-widest flex items-center gap-2"><Lock size={12} /> {t('confirmPassword')}</label>
             <input type="password" className="input-field" value={formData.confirmPassword} onChange={e => setFormData({ ...formData, confirmPassword: e.target.value })} placeholder="••••••••" required />
           </div>
         </div>
@@ -321,15 +323,15 @@ function AdminPasswordChange({ onBack }) {
         {error && <p className="text-xs text-red-500 font-bold flex items-center gap-2"><AlertCircle size={14}/> {error}</p>}
         {success && (
           <div className="p-4 bg-teal/10 text-teal rounded-xl flex items-center gap-2 text-xs font-bold">
-            <Check size={16} /> Admin credentials updated. Redirecting...
+            <Check size={16} /> {t('credentialsUpdated')}
           </div>
         )}
 
         {!success && (
           <div className="flex justify-end gap-3 pt-6">
-            <button type="button" onClick={onBack} className="btn-ghost text-xs">Cancel</button>
+            <button type="button" onClick={onBack} className="btn-ghost text-xs">{t('cancel')}</button>
             <button type="submit" disabled={loading} className="btn-primary min-w-[140px] justify-center gap-2 text-xs py-3">
-              {loading ? <Loader2 size={16} className="animate-spin" /> : <Check size={16} />} Update Password
+              {loading ? <Loader2 size={16} className="animate-spin" /> : <Check size={16} />} {t('updatePassword')}
             </button>
           </div>
         )}

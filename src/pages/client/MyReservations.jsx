@@ -7,6 +7,7 @@ import StatusChip from '../../components/ui/StatusChip';
 import { useAuth } from '../../context/AuthContext';
 import { useCurrency } from '../../context/CurrencyContext';
 import { reservationService } from '../../services/reservationService';
+import { useLanguage } from '../../context/LanguageContext';
 
 const rowVariants = {
   hidden: { opacity: 0, x: -10 },
@@ -14,6 +15,7 @@ const rowVariants = {
 };
 
 export default function MyReservations() {
+  const { t } = useLanguage();
   const { user } = useAuth();
   const { formatPrice } = useCurrency();
   const [bookings, setBookings] = useState([]);
@@ -100,7 +102,7 @@ export default function MyReservations() {
                       <td className="td">
                         <div className="flex items-center gap-1.5 text-primary-600">
                           <MapPin size={12} className="text-primary-400 shrink-0" />
-                          {b.location || 'Main Office'}
+                          {b.location || t('mainOffice')}
                         </div>
                       </td>
                       <td className="td"><StatusChip status={b.status?.toLowerCase()} /></td>
@@ -165,7 +167,7 @@ export default function MyReservations() {
                   
                   <div className="relative z-10">
                     <h4 className="text-xl font-bold mb-1">{selectedRes.vehicleName}</h4>
-                    <p className="text-xs text-primary-300 uppercase tracking-widest">{selectedRes.vehicle?.category || 'Premium Selection'}</p>
+                    <p className="text-xs text-primary-300 uppercase tracking-widest">{selectedRes.vehicle?.category ? t(selectedRes.vehicle.category.toLowerCase()) : t('premiumSelection')}</p>
                   </div>
                 </div>
 
@@ -200,7 +202,7 @@ export default function MyReservations() {
                         <div className="flex items-center gap-2 mb-2 text-primary-500 font-bold text-[10px] uppercase tracking-widest">
                           <MapPin size={12} className="text-teal" /> {t('location')}
                         </div>
-                        <p className="text-sm font-bold text-primary-900">{selectedRes.location || 'Main Office'}</p>
+                        <p className="text-sm font-bold text-primary-900">{selectedRes.location || t('mainOffice')}</p>
                       </div>
                     </div>
 

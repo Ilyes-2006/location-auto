@@ -5,6 +5,7 @@ import PageTransition from '../components/ui/PageTransition';
 import TopBar from '../components/layout/TopBar';
 import { userService } from '../services/userService';
 import { supabase } from '../supabaseClient';
+import { useLanguage } from '../context/LanguageContext';
 
 const rowVariants = {
   hidden: { opacity: 0, x: -10 },
@@ -26,6 +27,7 @@ function StatCard({ icon, label, value }) {
 }
 
 export default function Customers() {
+  const { t } = useLanguage();
   const [search, setSearch] = useState('');
   const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -71,13 +73,13 @@ export default function Customers() {
 
   return (
     <PageTransition>
-      <TopBar title="Client Roster" subtitle="Manage customer profiles and review rental histories." />
+      <TopBar title={t('clientRoster')} subtitle={t('manageProfiles')} />
 
       <div className="p-6 max-w-[1440px] mx-auto space-y-5">
         {/* Stats row */}
         <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
-          <StatCard icon={<Users size={18} className="text-primary-600" />} label="Total Clients" value={loading ? '...' : stats.total} />
-          <StatCard icon={<ShieldCheck size={18} className="text-primary-600" />} label="Vérifiés" value={loading ? '...' : stats.withPhone} />
+          <StatCard icon={<Users size={18} className="text-primary-600" />} label={t('totalClients')} value={loading ? '...' : stats.total} />
+          <StatCard icon={<ShieldCheck size={18} className="text-primary-600" />} label={t('verified')} value={loading ? '...' : stats.withPhone} />
         </div>
 
         {/* Toolbar */}
@@ -86,7 +88,7 @@ export default function Customers() {
             <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-primary-400" />
             <input
               className="input-field pl-9 w-60 text-xs py-1.5"
-              placeholder="Search clients…"
+              placeholder={t('searchClients')}
               value={search}
               onChange={e => setSearch(e.target.value)}
             />
@@ -103,19 +105,19 @@ export default function Customers() {
           {loading ? (
             <div className="py-20 flex flex-col items-center justify-center text-primary-400">
               <div className="w-10 h-10 border-4 border-teal/20 border-t-teal rounded-full animate-spin mb-4" />
-              <p className="text-sm font-medium">Loading users...</p>
+              <p className="text-sm font-medium">{t('loadingUsers')}</p>
             </div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="bg-primary-50 border-b border-primary-200">
-                    <th className="th">User</th>
-                    <th className="th">Contact</th>
-                    <th className="th">Status</th>
-                    <th className="th">Rentals</th>
-                    <th className="th">Total Spent</th>
-                    <th className="th">Joined</th>
+                    <th className="th">{t('user')}</th>
+                    <th className="th">{t('contact')}</th>
+                    <th className="th">{t('status')}</th>
+                    <th className="th">{t('reservations')}</th>
+                    <th className="th">{t('totalCost')}</th>
+                    <th className="th">{t('joined')}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -138,7 +140,7 @@ export default function Customers() {
                             )}
                           </div>
                           <div>
-                            <p className="font-semibold text-primary-900">{c.full_name || 'Unnamed'}</p>
+                            <p className="font-semibold text-primary-900">{c.full_name || t('unnamed')}</p>
                             <p className="text-[11px] text-primary-400">{c.id.substring(0, 8)}...</p>
                           </div>
                         </div>
@@ -155,7 +157,7 @@ export default function Customers() {
                       </td>
                       <td className="td">
                         <span className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-caps bg-teal/10 text-teal border border-teal/20 rounded-full">
-                          Client
+                          {t('client')}
                         </span>
                       </td>
                       <td className="td">
@@ -173,7 +175,7 @@ export default function Customers() {
                   {filtered.length === 0 && (
                     <tr>
                       <td colSpan={6} className="py-12 text-center text-primary-400 text-sm">
-                        No clients found.
+                        {t('noClientsFound')}
                       </td>
                     </tr>
                   )}
@@ -184,7 +186,7 @@ export default function Customers() {
 
           <div className="px-4 py-3 bg-primary-50 border-t border-primary-100 flex items-center justify-between">
             <p className="text-xs text-primary-500">
-              Showing <span className="font-semibold">{filtered.length}</span> of <span className="font-semibold">{customers.length}</span> users
+              {t('showing')} <span className="font-semibold">{filtered.length}</span> {t('of')} <span className="font-semibold">{customers.length}</span> {t('users')}
             </p>
           </div>
         </motion.div>

@@ -5,8 +5,10 @@ import PageTransition from '../../components/ui/PageTransition';
 import TopBar from '../../components/layout/TopBar';
 import { useAuth } from '../../context/AuthContext';
 import { userService } from '../../services/userService';
+import { useLanguage } from '../../context/LanguageContext';
 
 export default function UserProfile() {
+  const { t } = useLanguage();
   const { user, isSuperuser, refreshProfile } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -45,11 +47,11 @@ export default function UserProfile() {
         avatar_url: profile.avatar_url
       });
       if (refreshProfile) refreshProfile();
-      setSaveMessage('Profile saved successfully!');
+      setSaveMessage(t('profileSaved'));
       setIsEditing(false);
       setTimeout(() => setSaveMessage(''), 3000);
     } catch (err) {
-      setSaveMessage('Error saving profile. Please try again.');
+      setSaveMessage(t('errorSavingProfile'));
     } finally {
       setSaving(false);
     }
@@ -58,7 +60,7 @@ export default function UserProfile() {
   if (loading) {
     return (
       <PageTransition>
-        <TopBar title="My Profile" subtitle="Manage your personal information and preferences." />
+        <TopBar title={t('myProfile')} subtitle={t('managePersonalInfo')} />
         <div className="p-20 flex justify-center">
           <div className="w-10 h-10 border-4 border-teal/20 border-t-teal rounded-full animate-spin" />
         </div>
@@ -68,7 +70,7 @@ export default function UserProfile() {
 
   return (
     <PageTransition>
-      <TopBar title="My Profile" subtitle="Manage your personal information and preferences." />
+      <TopBar title={t('myProfile')} subtitle={t('managePersonalInfo')} />
 
       <div className="p-6 max-w-4xl mx-auto space-y-6">
 
@@ -78,12 +80,12 @@ export default function UserProfile() {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             className={`p-3 rounded-xl flex items-center gap-2 text-sm font-medium ${
-              saveMessage.includes('Error') 
+              saveMessage === t('errorSavingProfile') 
                 ? 'bg-red-50 text-red-600 border border-red-100' 
                 : 'bg-emerald-50 text-emerald-700 border border-emerald-100'
             }`}
           >
-            {saveMessage.includes('Error') ? <AlertCircle size={16} /> : <CheckCircle size={16} />}
+            {saveMessage === t('errorSavingProfile') ? <AlertCircle size={16} /> : <CheckCircle size={16} />}
             {saveMessage}
           </motion.div>
         )}
@@ -106,12 +108,12 @@ export default function UserProfile() {
           </div>
           
           <div className="flex-1 text-center md:text-left relative z-10">
-            <h2 className="text-2xl font-bold text-primary-900 mb-1">{profile.full_name || 'User'}</h2>
+            <h2 className="text-2xl font-bold text-primary-900 mb-1">{profile.full_name || t('user')}</h2>
             <p className="text-sm text-primary-500 mb-4">{user?.email}</p>
             
             <div className="flex flex-wrap items-center justify-center md:justify-start gap-4">
               <span className="chip chip-available flex items-center gap-1.5 px-3 py-1">
-                <Shield size={12} /> {isSuperuser ? 'Superuser Account' : 'Client Account'}
+                <Shield size={12} /> {isSuperuser ? t('superuserAccount') : t('clientAccount')}
               </span>
             </div>
           </div>
@@ -121,7 +123,7 @@ export default function UserProfile() {
               onClick={() => setIsEditing(true)}
               className="btn-secondary"
             >
-              Edit Profile
+              {t('editProfile')}
             </button>
           </div>
         </motion.div>
@@ -135,28 +137,28 @@ export default function UserProfile() {
             className="section-card"
           >
             <div className="px-5 py-4 border-b border-primary-100 bg-primary-50/50">
-              <h3 className="font-semibold text-primary-900 text-[15px]">Contact Information</h3>
+              <h3 className="font-semibold text-primary-900 text-[15px]">{t('contactInformation')}</h3>
             </div>
             <div className="p-5 space-y-4">
               <div className="flex items-start gap-3">
                 <Mail size={16} className="text-primary-400 mt-0.5 shrink-0" />
                 <div>
-                  <p className="text-xs text-primary-500 font-medium mb-0.5 uppercase tracking-caps">Email Address</p>
+                  <p className="text-xs text-primary-500 font-medium mb-0.5 uppercase tracking-caps">{t('emailAddress')}</p>
                   <p className="text-sm text-primary-900">{user?.email}</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
                 <Phone size={16} className="text-primary-400 mt-0.5 shrink-0" />
                 <div>
-                  <p className="text-xs text-primary-500 font-medium mb-0.5 uppercase tracking-caps">Phone Number</p>
-                  <p className="text-sm text-primary-900">{profile.phone || 'Not provided'}</p>
+                  <p className="text-xs text-primary-500 font-medium mb-0.5 uppercase tracking-caps">{t('phoneNumber')}</p>
+                  <p className="text-sm text-primary-900">{profile.phone || t('notProvided')}</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
                 <User size={16} className="text-primary-400 mt-0.5 shrink-0" />
                 <div>
-                  <p className="text-xs text-primary-500 font-medium mb-0.5 uppercase tracking-caps">Role</p>
-                  <p className="text-sm text-primary-900 capitalize">{isSuperuser ? 'Superuser' : 'Client'}</p>
+                  <p className="text-xs text-primary-500 font-medium mb-0.5 uppercase tracking-caps">{t('role')}</p>
+                  <p className="text-sm text-primary-900 capitalize">{isSuperuser ? t('superuser') : t('client')}</p>
                 </div>
               </div>
             </div>
@@ -170,17 +172,17 @@ export default function UserProfile() {
             className="section-card flex flex-col"
           >
             <div className="px-5 py-4 border-b border-primary-100 bg-primary-50/50">
-              <h3 className="font-semibold text-primary-900 text-[15px]">Account Details</h3>
+              <h3 className="font-semibold text-primary-900 text-[15px]">{t('accountDetails')}</h3>
             </div>
             <div className="p-5 flex-1 space-y-4">
               <div className="border border-primary-200 rounded-lg p-4 bg-primary-50/30">
-                <p className="text-xs text-primary-500 font-medium mb-1 uppercase tracking-caps">Account ID</p>
+                <p className="text-xs text-primary-500 font-medium mb-1 uppercase tracking-caps">{t('accountId')}</p>
                 <p className="text-xs font-mono text-primary-700">{user?.id}</p>
               </div>
               <div className="border border-primary-200 rounded-lg p-4 bg-primary-50/30">
-                <p className="text-xs text-primary-500 font-medium mb-1 uppercase tracking-caps">Account Type</p>
+                <p className="text-xs text-primary-500 font-medium mb-1 uppercase tracking-caps">{t('accountType')}</p>
                 <span className="text-[10px] font-bold text-teal bg-teal/10 px-2 py-0.5 rounded uppercase tracking-caps">
-                  {isSuperuser ? 'Superuser' : 'Client'}
+                  {isSuperuser ? t('superuser') : t('client')}
                 </span>
               </div>
             </div>
@@ -208,7 +210,7 @@ export default function UserProfile() {
             >
               <div className="p-8">
                 <div className="flex justify-between items-center mb-6">
-                  <h3 className="text-xl font-bold text-primary-900">Edit Profile</h3>
+                  <h3 className="text-xl font-bold text-primary-900">{t('editProfile')}</h3>
                   <button 
                     onClick={() => setIsEditing(false)}
                     className="p-2 text-primary-400 hover:text-primary-600 hover:bg-primary-50 rounded-xl transition-all"
@@ -220,7 +222,7 @@ export default function UserProfile() {
                 <div className="space-y-4">
                   {/* Image Upload */}
                   <div>
-                    <label className="text-[11px] font-bold text-primary-500 uppercase tracking-widest mb-1.5 block">Profile Picture</label>
+                    <label className="text-[11px] font-bold text-primary-500 uppercase tracking-widest mb-1.5 block">{t('profilePicture')}</label>
                     <div className="flex items-center gap-4">
                       {profile.avatar_url ? (
                         <img src={profile.avatar_url} className="w-12 h-12 rounded-full object-cover border border-primary-200" alt="Avatar Preview" />
@@ -248,7 +250,7 @@ export default function UserProfile() {
                   </div>
 
                   <div>
-                    <label className="text-[11px] font-bold text-primary-500 uppercase tracking-widest mb-1.5 block">Full Name</label>
+                    <label className="text-[11px] font-bold text-primary-500 uppercase tracking-widest mb-1.5 block">{t('fullName')}</label>
                     <input 
                       type="text" 
                       className="input-field" 
@@ -257,17 +259,17 @@ export default function UserProfile() {
                     />
                   </div>
                   <div>
-                    <label className="text-[11px] font-bold text-primary-500 uppercase tracking-widest mb-1.5 block">Email Address</label>
+                    <label className="text-[11px] font-bold text-primary-500 uppercase tracking-widest mb-1.5 block">{t('emailAddress')}</label>
                     <input 
                       type="email" 
                       className="input-field bg-primary-50 cursor-not-allowed" 
                       value={user?.email || ''}
                       disabled
                     />
-                    <p className="text-[10px] text-primary-400 mt-1">Email cannot be changed</p>
+                    <p className="text-[10px] text-primary-400 mt-1">{t('emailCannotBeChanged')}</p>
                   </div>
                   <div>
-                    <label className="text-[11px] font-bold text-primary-500 uppercase tracking-widest mb-1.5 block">Phone Number</label>
+                    <label className="text-[11px] font-bold text-primary-500 uppercase tracking-widest mb-1.5 block">{t('phoneNumber')}</label>
                     <input 
                       type="tel" 
                       className="input-field" 
@@ -283,7 +285,7 @@ export default function UserProfile() {
                     onClick={() => setIsEditing(false)}
                     className="flex-1 btn-secondary py-3"
                   >
-                    Cancel
+                    {t('cancel')}
                   </button>
                   <button 
                     onClick={handleSave}
@@ -294,7 +296,7 @@ export default function UserProfile() {
                       <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                     ) : (
                       <>
-                        <Save size={18} /> Save Changes
+                        <Save size={18} /> {t('saveChanges')}
                       </>
                     )}
                   </button>

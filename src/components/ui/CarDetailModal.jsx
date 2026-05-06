@@ -1,9 +1,11 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Star, Users, Zap, Fuel, ShieldCheck, MapPin, Headphones } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import { useLanguage } from '../../context/LanguageContext';
 
 export default function CarDetailModal({ car, isOpen, onClose, onReserve }) {
   const { user } = useAuth();
+  const { t } = useLanguage();
   if (!isOpen || !car) return null;
 
   return (
@@ -23,11 +25,11 @@ export default function CarDetailModal({ car, isOpen, onClose, onReserve }) {
           initial={{ opacity: 0, scale: 0.9, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.9, y: 20 }}
-          className="relative w-full max-w-2xl bg-white rounded-2xl shadow-modal overflow-hidden border border-primary-200 flex flex-col md:flex-row"
+          className="relative w-full max-w-2xl bg-white dark:bg-primary-900 rounded-2xl shadow-modal overflow-hidden border border-primary-200 dark:border-primary-800 flex flex-col md:flex-row"
         >
           <button 
             onClick={onClose}
-            className="absolute top-4 right-4 z-10 p-2 bg-white/80 backdrop-blur rounded-full shadow-card text-primary-500 hover:text-teal transition-colors"
+            className="absolute top-4 right-4 z-10 p-2 bg-white/80 dark:bg-primary-800/80 backdrop-blur rounded-full shadow-card text-primary-500 hover:text-teal transition-colors"
           >
             <X size={20} />
           </button>
@@ -47,7 +49,7 @@ export default function CarDetailModal({ car, isOpen, onClose, onReserve }) {
             )}
             <div className="absolute bottom-4 left-6">
               <span className="px-3 py-1 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-[10px] font-bold uppercase tracking-widest">
-                {car.category}
+                {t(car.category?.toLowerCase()) || car.category}
               </span>
             </div>
           </div>
@@ -56,43 +58,43 @@ export default function CarDetailModal({ car, isOpen, onClose, onReserve }) {
           <div className="w-full md:w-1/2 p-8 flex flex-col">
             <div className="mb-6">
               <div className="flex items-center gap-2 mb-1">
-                <h2 className="text-2xl font-bold text-primary-900">{car.brand} {car.model}</h2>
-                <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${car.status === 'AVAILABLE' ? 'bg-emerald-100 text-emerald-600' : 'bg-red-100 text-red-600'}`}>
-                  {car.status === 'AVAILABLE' ? 'Disponible' : 'Loué'}
+                <h2 className="text-2xl font-bold text-primary-900 dark:text-white">{car.brand} {car.model}</h2>
+                <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${car.status === 'AVAILABLE' ? 'bg-emerald-100 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-400' : 'bg-red-100 text-red-600 dark:bg-red-500/20 dark:text-red-400'}`}>
+                  {car.status === 'AVAILABLE' ? t('available') : t('booked')}
                 </span>
               </div>
               <div className="flex items-center gap-1">
                 <Star size={14} className="text-amber-400 fill-amber-400" />
-                <span className="text-sm font-bold text-primary-700">{car.rating || '4.8'}</span>
-                <span className="text-sm text-primary-400 ml-1">({car.review_count || 12} avis clients)</span>
+                <span className="text-sm font-bold text-primary-700 dark:text-primary-300">{car.rating || '4.8'}</span>
+                <span className="text-sm text-primary-400 ml-1">({car.review_count || 12} {t('customerReviews')})</span>
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4 mb-8">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-primary-50 rounded-lg text-primary-600">
+                <div className="p-2 bg-primary-50 dark:bg-primary-800/50 rounded-lg text-primary-600 dark:text-primary-400">
                   <Users size={18} />
                 </div>
                 <div>
-                  <p className="text-[10px] text-primary-400 uppercase font-bold tracking-tight">Capacité</p>
-                  <p className="text-sm font-semibold text-primary-800">{car.seats || 5} Places</p>
+                  <p className="text-[10px] text-primary-400 uppercase font-bold tracking-tight">{t('capacity')}</p>
+                  <p className="text-sm font-semibold text-primary-800 dark:text-primary-200">{car.seats || 5} {t('seats')}</p>
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-primary-50 rounded-lg text-primary-600">
+                <div className="p-2 bg-primary-50 dark:bg-primary-800/50 rounded-lg text-primary-600 dark:text-primary-400">
                   <Fuel size={18} />
                 </div>
                 <div>
-                  <p className="text-[10px] text-primary-400 uppercase font-bold tracking-tight">Immatriculation</p>
-                  <p className="text-sm font-semibold text-primary-800">{car.license_plate || car.vin}</p>
+                  <p className="text-[10px] text-primary-400 uppercase font-bold tracking-tight">{t('licensePlate')}</p>
+                  <p className="text-sm font-semibold text-primary-800 dark:text-primary-200">{car.license_plate || car.vin}</p>
                 </div>
               </div>
             </div>
 
-            <div className="mt-auto pt-6 border-t border-primary-100 flex items-center justify-between">
+            <div className="mt-auto pt-6 border-t border-primary-100 dark:border-primary-800 flex items-center justify-between">
               <div>
-                <p className="text-xs text-primary-400">Prix total par jour</p>
-                <p className="text-2xl font-bold text-primary-900">€{car.daily_rate || car.dailyRate}<span className="text-sm font-normal text-primary-400"> /jour</span></p>
+                <p className="text-xs text-primary-400">{t('totalPricePerDay')}</p>
+                <p className="text-2xl font-bold text-primary-900 dark:text-white">€{car.daily_rate || car.dailyRate}<span className="text-sm font-normal text-primary-400"> /{t('perDay')}</span></p>
               </div>
               {!user?.isSuperuser ? (
                 <button
@@ -103,11 +105,11 @@ export default function CarDetailModal({ car, isOpen, onClose, onReserve }) {
                   }}
                   className={`btn-primary py-3 px-8 font-bold shadow-lifted flex items-center gap-2 ${car.status !== 'AVAILABLE' ? 'opacity-40 cursor-not-allowed' : ''}`}
                 >
-                  Réserver <ShieldCheck size={18} />
+                  {t('reserve')} <ShieldCheck size={18} />
                 </button>
               ) : (
                 <button className="btn-secondary py-3 px-8 font-bold flex items-center gap-2">
-                  Support <Headphones size={18} />
+                  {t('support')} <Headphones size={18} />
                 </button>
               )}
             </div>

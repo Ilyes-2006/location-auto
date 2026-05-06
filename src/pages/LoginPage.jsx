@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Mail, Lock, LogIn, Car, AlertCircle } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { useLanguage } from '../context/LanguageContext';
 import PageTransition from '../components/ui/PageTransition';
 
 export default function LoginPage() {
@@ -11,6 +12,7 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const { signInWithPassword, loading: authLoading } = useAuth();
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -41,7 +43,7 @@ export default function LoginPage() {
         navigate(from);
       }
     } catch (err) {
-      setError('Une erreur inattendue est survenue. Veuillez réessayer.');
+      setError(t('unexpectedError'));
       setIsLoggingIn(false);
     }
   };
@@ -66,7 +68,7 @@ export default function LoginPage() {
               <Car size={32} />
             </div>
             <h1 className="text-3xl font-bold text-primary-900 tracking-tight">Auto-Loc</h1>
-            <p className="text-primary-500 mt-2">Connectez-vous à votre compte</p>
+            <p className="text-primary-500 mt-2">{t('signInToAccount')}</p>
           </motion.div>
 
           <motion.div
@@ -108,8 +110,8 @@ export default function LoginPage() {
 
               <div className="space-y-2">
                 <div className="flex justify-between items-center ml-1">
-                  <label className="text-xs font-semibold text-primary-700 uppercase tracking-caps">Mot de passe</label>
-                  <button type="button" className="text-xs text-teal font-medium hover:underline">Oublié ?</button>
+                  <label className="text-xs font-semibold text-primary-700 uppercase tracking-caps">{t('password')}</label>
+                  <button type="button" className="text-xs text-teal font-medium hover:underline">{t('forgot')}</button>
                 </div>
                 <div className="relative">
                   <Lock size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-primary-400" />
@@ -135,7 +137,7 @@ export default function LoginPage() {
                 ) : (
                   <>
                     <LogIn size={20} />
-                    Se connecter
+                    {t('signIn')}
                   </>
                 )}
               </button>
@@ -143,12 +145,12 @@ export default function LoginPage() {
 
             <div className="mt-8 pt-6 border-t border-primary-100 text-center">
               <p className="text-sm text-primary-500">
-                Pas encore de compte ?{' '}
+                {t('dontHaveAccount')}{' '}
                 <button 
                   onClick={() => navigate('/signup')}
                   className="text-teal font-bold hover:underline"
                 >
-                  S'inscrire
+                  {t('signUp')}
                 </button>
               </p>
             </div>

@@ -36,7 +36,7 @@ export default function ClientSidebar() {
 
       {/* Nav */}
       <nav className="flex-1 px-3 py-4 space-y-0.5">
-        {clientNavItems.map(({ path, label, icon: Icon }, i) => (
+        {clientNavItems.map(({ path, labelKey, icon: Icon }, i) => (
           <motion.div key={path} custom={i} variants={linkVariants} initial="hidden" animate="visible">
             <NavLink
               to={path}
@@ -46,7 +46,7 @@ export default function ClientSidebar() {
               }
             >
               <Icon size={17} />
-              <span>{t(label.toLowerCase().replace('my ', ''))}</span>
+              <span>{t(labelKey)}</span>
             </NavLink>
           </motion.div>
         ))}
@@ -57,7 +57,7 @@ export default function ClientSidebar() {
               className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
             >
               <Zap size={17} />
-              <span>Admin Panel</span>
+              <span>{t('adminPanel')}</span>
             </NavLink>
           </motion.div>
         )}
@@ -71,13 +71,13 @@ export default function ClientSidebar() {
               onClick={() => navigate('/login')}
               className="btn-primary w-full py-2 text-xs flex items-center justify-center gap-2"
             >
-              <LogIn size={14} /> Se connecter
+              <LogIn size={14} /> {t('signIn')}
             </button>
             <button 
               onClick={() => navigate('/signup')}
               className="w-full py-2 text-xs text-primary-400 hover:text-white transition-colors font-medium flex items-center justify-center gap-2"
             >
-              <UserPlus size={14} /> S'inscrire
+              <UserPlus size={14} /> {t('signUp')}
             </button>
           </div>
         ) : (
@@ -93,7 +93,7 @@ export default function ClientSidebar() {
               </div>
               <div className="overflow-hidden">
                 <p className="text-white text-xs font-semibold truncate">{user.email}</p>
-                <p className="text-primary-500 text-[11px] uppercase">{isSuperuser ? 'Superuser' : 'Client'}</p>
+                <p className="text-primary-500 text-[11px] uppercase">{isSuperuser ? t('superuser') : t('customer')}</p>
               </div>
             </NavLink>
             <SignOutButton />

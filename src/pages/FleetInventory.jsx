@@ -107,10 +107,10 @@ export default function FleetInventory() {
   };
 
   const validateForm = () => {
-    if (!formData.name) return t('vehicleName') + " is required";
-    if (!formData.vin || formData.vin.length < 5) return t('vinNumber') + " is required";
-    if (!formData.dailyRate) return t('dailyRate') + " is required";
-    if (!formData.imgUrl) return t('imageUrl') + " is required";
+    if (!formData.name) return t('vehicleName') + " " + t('is_required');
+    if (!formData.vin || formData.vin.length < 5) return t('vinNumber') + " " + t('is_required');
+    if (!formData.dailyRate) return t('dailyRate') + " " + t('is_required');
+    if (!formData.imgUrl) return t('imageUrl') + " " + t('is_required');
     return null;
   };
 
